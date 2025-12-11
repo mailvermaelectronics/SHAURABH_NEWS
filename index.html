@@ -38,8 +38,9 @@
             font-size:16px;
             overflow-x: hidden; 
         }
-        a{color:inherit;text-decoration:none; transition: color 200ms}
-        a:hover{color:var(--highlight);}
+        a{color:inherit;text-decoration:none; transition: color 200ms, text-decoration 200ms}
+        /* FIXED: Added text-decoration: none; to remove underline on hover for all links */
+        a:hover{color:var(--highlight); text-decoration: none;} 
         img{max-width:100%;display:block;height:auto}
         h1,h2,h3,h4{margin-top:0;}
         
@@ -71,7 +72,7 @@
         .delay-500{transition-delay:500ms} 
         .delay-600{transition-delay:600ms} 
         .delay-700{transition-delay:700ms} 
-        .delay-800{transition-delay:800ms} /* Added for sidebar */
+        .delay-800{transition-delay:800ms} 
 
 
         /* ----------------------------
@@ -89,26 +90,22 @@
             display:flex;
             align-items:center;
             justify-content:space-between;
-            /* Increased padding for taller header */
             padding:18px 0; 
             gap: 20px;
         }
         
         /* --- BRAND NEW LOGO STYLES (AIN NEWS) --- */
         .brand {
-            position: relative; /* Container for relative positioning of NEWS */
+            position: relative; 
             display: flex;
             align-items: center;
-            /* Increased height to accommodate larger font */
             height: 45px; 
-            /* NEW: Left side se thoda ander karne ke liye margin/padding adjustment */
             padding-left: 5px; 
         }
         
         .brand .title{
             font-family: 'Inter', sans-serif;
             font-weight:900;
-            /* CHANGE 1: Increased font size for larger header */
             font-size:42px; 
             letter-spacing:1px;
             color: var(--highlight); 
@@ -120,12 +117,9 @@
             padding: 0;
         }
         
-        /* New Element for NEWS */
         .brand .subtitle {
             position: absolute;
-            /* FIX 1: NEWS ko AIN se thoda upar shift kiya */
             top: -2px; 
-            /* FIX 2: NEWS ko AIN ke right edge se thoda pehle shift kiya */
             left: 60%; 
             font-size: 11px; 
             font-weight: 700;
@@ -137,34 +131,36 @@
         }
         
         .logo-img {
-            display: none; /* HIDE LOGO IMAGE */
+            display: none; 
         }
         /* --- END LOGO STYLES --- */
 
 
         .nav-links{
             display:flex;
-            gap:25px; /* Increased gap */
+            gap:25px; 
             align-items:center;
             flex-grow: 1;
         }
         .cat{
-            padding:10px 0; /* Increased padding */
+            padding:10px 0; 
             color:var(--muted);
             font-weight:600;
-            font-size: 17px; /* Slightly larger text */
+            font-size: 17px; 
             position: relative;
         }
         
+        /* FIXED: Added text-decoration: none; to remove underline on click/active */
         .cat:hover, .cat.active{
             color: var(--highlight);
+            text-decoration: none; 
         }
 
         /* Search and Actions */
         .nav-actions{
             display:flex;
             align-items:center;
-            gap:12px; /* Increased gap */
+            gap:12px; 
         }
         #search-input-wrapper {
             width: 0;
@@ -174,27 +170,27 @@
         }
 
         #search-input-wrapper.open {
-            width: 280px; /* Slightly wider */
+            width: 280px; 
             opacity: 1;
             margin-right: 12px;
         }
 
         #search-input-wrapper input {
             width: 100%;
-            padding: 10px 14px; /* Increased padding */
+            padding: 10px 14px; 
             background: #222;
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 8px;
             color: var(--accent);
             outline: none;
-            font-size: 16px; /* Slightly larger text */
+            font-size: 16px; 
         }
         
         .search-icon{
             background:transparent;
             border:1px solid rgba(255,255,255,0.1);
             color:var(--muted);
-            width:42px; /* Larger icon button */
+            width:42px; 
             height:42px;
             display:flex;align-items:center;justify-content:center;
             border-radius:8px;
@@ -212,10 +208,10 @@
 
         .btn-live{
             background:var(--brand-red);
-            padding:10px 14px; /* Increased padding */
+            padding:10px 14px; 
             border-radius:8px;
             font-weight:700;
-            font-size: 16px; /* Slightly larger text */
+            font-size: 16px; 
             display:flex;
             align-items:center;
             gap:5px;
@@ -274,7 +270,7 @@
 
 
         /* ----------------------------
-           Main Layout & Grids (No Change)
+           Main Layout & Grids 
            ---------------------------- */
         main{padding: 25px 0;}
         
@@ -285,7 +281,7 @@
         }
 
         /* ----------------------------
-           Hero/Feature Section (No Change)
+           Hero/Feature Section 
            ---------------------------- */
         .hero-left{
             display: flex;
@@ -385,7 +381,7 @@
         }
 
         /* ----------------------------
-           Sidebar (No Change)
+           Sidebar 
            ---------------------------- */
         .sidebar h2{
             font-size: 22px;
@@ -431,7 +427,7 @@
         }
 
         /* ----------------------------
-           Video Section (No Change)
+           Video Section 
            ---------------------------- */
         .section-header{
             display: flex;
@@ -517,7 +513,6 @@
             border-top:1px solid rgba(255,255,255,0.02);
         }
         .footer-grid{
-            /* Adjusted grid columns to 4 to accommodate the extra number */
             display:grid;
             grid-template-columns:2fr 1fr 1fr 1.5fr; 
             gap:20px;
@@ -539,9 +534,10 @@
             font-size: 14px;
             color: var(--muted);
         }
+        /* FIXED: Removed underline on footer link hover */
         .footer-col a:hover{
             color: var(--highlight);
-            text-decoration: underline;
+            text-decoration: none; 
         }
         .social-links{
             margin-top:15px; 
@@ -557,7 +553,7 @@
             color: var(--brand-red);
             transform: translateY(-2px) scale(1.1);
         }
-        /* UPDATED: Contact Info Styles */
+        
         .contact-info a{
             display: flex;
             align-items: center;
@@ -567,18 +563,17 @@
             font-weight: 500;
         }
         .contact-info a i{
-            /* Base style for icons */
             font-size: 20px; 
             width: 25px; 
             text-align: center;
             transition: color 200ms;
         }
-        /* New: Specific icon colors based on user image/request */
+        
         .contact-info .fa-phone, .contact-info .fa-phone-alt, .contact-info .fa-phone-volume {
-            color: #25d366; /* Green for Call */
+            color: #25d366; 
         }
         .contact-info .fa-envelope, .contact-info .fa-at {
-            color: #e74c3c; /* Red/Orange for Mail */
+            color: #e74c3c; 
         }
 
         .contact-info p{
@@ -595,7 +590,7 @@
         }
 
         /* ----------------------------
-           Mobile Menu Overlay (No Change)
+           Mobile Menu Overlay 
            ---------------------------- */
         #mobile-menu-overlay {
             position: fixed;
@@ -640,7 +635,7 @@
         }
         
         /* ===========================================
-           FIXED WHATSAPP BUTTON STYLES (ANIMATION FASTER)
+           WHATSAPP BUTTON STYLES
            =========================================== */
         #whatsapp-button {
             position: fixed;
@@ -649,7 +644,7 @@
             z-index: 1500;
             width: 60px;
             height: 60px;
-            background-color: #25d366; /* WhatsApp Green */
+            background-color: #25d366; 
             color: white;
             border-radius: 50%;
             display: flex;
@@ -660,7 +655,6 @@
             text-decoration: none;
             cursor: pointer;
             transition: transform 0.15s ease-in-out; 
-            /* Faster Animation: 1s */
             animation: zoom-fast 1s infinite ease-in-out; 
         }
         
@@ -673,15 +667,12 @@
             50% { transform: scale(1.05); }
             100% { transform: scale(1); }
         }
-        /* ===========================================
-           END WHATSAPP BUTTON STYLES
-           =========================================== */
         
         /* ===========================================
-           NEW: FIXED BOTTOM MOBILE NAV STYLES
+           FIXED BOTTOM MOBILE NAV STYLES
            =========================================== */
         #bottom-nav {
-            display: none; /* Hide by default */
+            display: none; 
         }
         
         /* ----------------------------
@@ -693,12 +684,10 @@
             .container{
                 padding: 0 10px; 
             }
-            /* CHANGE 3: Mobile topbar padding increased to push content inwards */
             .topbar, .ticker{
                 padding-left: 15px; 
                 padding-right: 15px;
             }
-            /* Decreased topbar padding on mobile for better space utilization */
             .topbar {
                 padding: 10px 0; 
                 gap: 15px;
@@ -712,14 +701,11 @@
             .nav-links{display: none;} 
             
             .brand .title{
-                /* CHANGE 2: Adjusted larger font on mobile */
                 font-size: 34px; 
             } 
             .brand .subtitle {
                 font-size: 9px; 
-                /* FIX 3: Mobile par left position adjust ki */
                 left: 70%; 
-                /* FIX 4: Mobile par top position adjust ki */
                 top: -1px; 
             }
             
@@ -772,7 +758,7 @@
             /* Footer */
             footer{padding: 20px 10px;}
             .footer-grid{
-                grid-template-columns: 1fr; /* Collapse footer grid to single column on mobile */
+                grid-template-columns: 1fr; 
             }
             .footer-col h3{margin-top: 15px;}
             
@@ -835,7 +821,6 @@
                 color: var(--brand-red); 
             }
             
-            /* Hide the mobile menu overlay since the bottom bar replaces it */
             #mobile-menu-overlay {
                 display: none !important;
             }
@@ -1107,9 +1092,9 @@
                             <i class="fas fa-phone"></i>
                             +91 8899439997 (समाचार)
                         </a>
-                        <a href="tel:+918393829512">
+                        <a href="tel:+918899439997">
                             <i class="fas fa-phone"></i>
-                            +91 8393829512 (ग्राहक सेवा)
+                            +91 8899439997 (ग्राहक सेवा)
                         </a>
                     </div>
                 </div>
@@ -1194,7 +1179,7 @@
 
             if(moreToggle){
                 moreToggle.addEventListener('click', (e) => {
-                    e.preventDefault(); // Prevent default link behavior
+                    e.preventDefault(); 
                     mobileMenu.classList.add('open');
                     document.body.style.overflow = 'hidden'; 
                 });
@@ -1230,8 +1215,6 @@
                         entry.target.classList.add('animated');
                     } else {
                         // FIX: Element is exiting the viewport, so remove the 'animated' class. 
-                        // This resets the element to its initial (opacity:0, transform:Y(80px)) state, 
-                        // allowing the animation to fire again when it re-enters.
                         entry.target.classList.remove('animated');
                     }
                 });
