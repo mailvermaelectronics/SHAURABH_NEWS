@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" /> 
     <title>AIN NEWS - एक आधुनिक हिंदी समाचार</title>
-    <meta name="description" content="एक सामान्य, आधुनिक हिंदी समाचार वेबसाइट" />
+    <meta name="description" content="एक सामान्य, आधुनिक हिंदी समाचार वेबसाइट।" />
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
@@ -88,43 +88,72 @@
             display:flex;
             align-items:center;
             justify-content:space-between;
-            padding:12px 0; 
-            gap: 15px;
+            /* Increased padding for taller header */
+            padding:18px 0; 
+            gap: 20px;
         }
         
         /* --- BRAND NEW LOGO STYLES (AIN NEWS) --- */
+        .brand {
+            position: relative; /* Container for relative positioning of NEWS */
+            display: flex;
+            align-items: center;
+            /* Increased height to accommodate larger font */
+            height: 45px; 
+            /* NEW: Left side se thoda ander karne ke liye margin/padding adjustment */
+            padding-left: 5px; 
+        }
+        
         .brand .title{
             font-family: 'Inter', sans-serif;
             font-weight:900;
-            font-size:28px;
+            /* CHANGE 1: Increased font size for larger header */
+            font-size:42px; 
             letter-spacing:1px;
-            color: var(--highlight); /* White text */
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); /* Subtle white glow */
+            color: var(--highlight); 
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); 
             white-space: nowrap;
-            display: none; /* Hide text if logo is shown */
+            display: block; 
+            line-height: 1;
+            margin: 0;
+            padding: 0;
         }
+        
+        /* New Element for NEWS */
+        .brand .subtitle {
+            position: absolute;
+            /* FIX 1: NEWS ko AIN se thoda upar shift kiya */
+            top: -2px; 
+            /* FIX 2: NEWS ko AIN ke right edge se thoda pehle shift kiya */
+            left: 60%; 
+            font-size: 11px; 
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: var(--highlight);
+            line-height: 1;
+            white-space: nowrap;
+            text-shadow: none;
+        }
+        
         .logo-img {
-            height: 35px; /* Adjust size as needed */
-            width: auto;
-            max-width: 150px;
-            filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.5)); /* Subtle shadow for transparent logo */
+            display: none; /* HIDE LOGO IMAGE */
         }
         /* --- END LOGO STYLES --- */
 
 
         .nav-links{
             display:flex;
-            gap:20px;
+            gap:25px; /* Increased gap */
             align-items:center;
             flex-grow: 1;
         }
         .cat{
-            padding:8px 0;
+            padding:10px 0; /* Increased padding */
             color:var(--muted);
             font-weight:600;
+            font-size: 17px; /* Slightly larger text */
             position: relative;
         }
-        /* REMOVED: .cat::after, .cat:hover::after, .cat.active::after styles to remove the line */
         
         .cat:hover, .cat.active{
             color: var(--highlight);
@@ -134,7 +163,7 @@
         .nav-actions{
             display:flex;
             align-items:center;
-            gap:10px;
+            gap:12px; /* Increased gap */
         }
         #search-input-wrapper {
             width: 0;
@@ -144,33 +173,35 @@
         }
 
         #search-input-wrapper.open {
-            width: 250px; 
+            width: 280px; /* Slightly wider */
             opacity: 1;
-            margin-right: 10px;
+            margin-right: 12px;
         }
 
         #search-input-wrapper input {
             width: 100%;
-            padding: 8px 12px;
+            padding: 10px 14px; /* Increased padding */
             background: #222;
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 8px;
             color: var(--accent);
             outline: none;
-            font-size: 15px;
+            font-size: 16px; /* Slightly larger text */
         }
         
         .search-icon{
             background:transparent;
             border:1px solid rgba(255,255,255,0.1);
             color:var(--muted);
-            width:38px;height:38px;
+            width:42px; /* Larger icon button */
+            height:42px;
             display:flex;align-items:center;justify-content:center;
             border-radius:8px;
             cursor:pointer;
             transition:var(--transition);
             position: static; 
             z-index: auto; 
+            font-size: 18px;
         }
         .search-icon:hover{
             background:rgba(255,255,255,0.05);
@@ -180,9 +211,10 @@
 
         .btn-live{
             background:var(--brand-red);
-            padding:8px 12px;
+            padding:10px 14px; /* Increased padding */
             border-radius:8px;
             font-weight:700;
+            font-size: 16px; /* Slightly larger text */
             display:flex;
             align-items:center;
             gap:5px;
@@ -627,7 +659,7 @@
             text-decoration: none;
             cursor: pointer;
             transition: transform 0.15s ease-in-out; 
-            /* Faster Animation: changed 2s to 1s */
+            /* Faster Animation: 1s */
             animation: zoom-fast 1s infinite ease-in-out; 
         }
         
@@ -660,9 +692,15 @@
             .container{
                 padding: 0 10px; 
             }
+            /* CHANGE 3: Mobile topbar padding increased to push content inwards */
             .topbar, .ticker{
-                padding-left: 10px;
-                padding-right: 10px;
+                padding-left: 15px; 
+                padding-right: 15px;
+            }
+            /* Decreased topbar padding on mobile for better space utilization */
+            .topbar {
+                padding: 10px 0; 
+                gap: 15px;
             }
             .ticker{
                 padding-top: 5px;
@@ -670,16 +708,28 @@
             }
 
             /* Header Adjustments */
-            .nav-links{display: none;} /* **HIDE DESKTOP MENU LINKS** */
-            /* .hamb-btn removed */
-            .brand .title{display: none;} /* Always hide text on mobile when logo is used */
-            .logo-img {height: 30px;} /* Smaller logo on mobile */
+            .nav-links{display: none;} 
+            
+            .brand .title{
+                /* CHANGE 2: Adjusted larger font on mobile */
+                font-size: 34px; 
+            } 
+            .brand .subtitle {
+                font-size: 9px; 
+                /* FIX 3: Mobile par left position adjust ki */
+                left: 70%; 
+                /* FIX 4: Mobile par top position adjust ki */
+                top: -1px; 
+            }
+            
+            .logo-img {display: none;} 
+            
             .btn-live{padding: 6px 10px; font-size: 14px;}
-            .search-icon{width: 35px; height: 35px;}
+            .search-icon{width: 35px; height: 35px; font-size: 16px;}
             
             /* Mobile Search Bar Behavior */
             #search-input-wrapper.open {
-                width: 150px; /* Smaller width on mobile */
+                width: 150px; 
                 margin-right: 5px;
             }
             
@@ -728,7 +778,7 @@
             /* WhatsApp Button position adjustment for mobile */
             #whatsapp-button {
                 right: 10px;
-                bottom: 80px; /* Kept high for mobile, above the new bottom bar */
+                bottom: 80px; 
                 width: 50px;
                 height: 50px;
                 font-size: 24px;
@@ -736,12 +786,12 @@
             
             /* **SHOW FIXED BOTTOM MOBILE NAV** */
             #bottom-nav {
-                display: block; /* Show only on mobile */
+                display: block; 
                 position: fixed;
                 bottom: 0;
                 left: 0;
                 width: 100%;
-                z-index: 1000; /* Above everything except maybe modal/whatsapp */
+                z-index: 1000; 
                 background: var(--card); 
                 border-top: 1px solid rgba(255, 255, 255, 0.1);
                 box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3);
@@ -758,7 +808,7 @@
 
             #bottom-nav .nav-item {
                 text-align: center;
-                flex: 1; /* Equal width for all items */
+                flex: 1; 
             }
 
             #bottom-nav a {
@@ -781,7 +831,7 @@
             }
             
             #bottom-nav a.active {
-                color: var(--brand-red); /* Active link highlight */
+                color: var(--brand-red); 
             }
             
             /* Hide the mobile menu overlay since the bottom bar replaces it */
@@ -797,8 +847,9 @@
     <header>
         <div class="topbar container">
             <div class="brand">
-                <img src="res/logo.png" alt="AIN NEWS Logo" class="logo-img">
-                <div class="title">AIN NEWS</div> </div>
+                <div class="title">AIN</div> 
+                <div class="subtitle">NEWS</div>
+            </div>
             
             <nav class="nav-links">
                 <a href="#" class="cat active">देश</a>
@@ -839,7 +890,10 @@
 
     <div id="mobile-menu-overlay" style="display: none;">
         <a href="#" id="close-menu">✕</a>
-        <div class="brand" style="margin-bottom: 20px;"><img src="https://via.placeholder.com/150x50/0b0b0b/ffffff?text=AIN+NEWS+Logo" alt="AIN NEWS Logo" class="logo-img"></div>
+        <div class="brand" style="margin-bottom: 20px;">
+            <div class="title">AIN</div>
+            <div class="subtitle">NEWS</div>
+        </div>
         <div class="mobile-menu-content">
             <a href="#">देश (होम)</a>
             <a href="#">दुनिया</a>
@@ -849,7 +903,7 @@
             <a href="#">मनोरंजन</a>
             <hr style="border-color: rgba(255,255,255,0.05); margin: 10px 0;">
             <a href="#" style="color: var(--brand-red);">🔴 LIVE TV देखें</a>
-            <a href="#"> </a>
+            <a href="#">लॉगिन / साइनअप</a>
         </div>
     </div>
     
@@ -1048,15 +1102,15 @@
                             <i class="fas fa-envelope"></i>
                             souravchaudhary8393@gmail.com
                         </a>
-                        <a href="tel:+918393829512">
+                        <a href="tel:+918899439997">
                             <i class="fas fa-phone"></i>
-                            +91 8393829512 (समाचार)
+                            +91 8899439997 (समाचार)
                         </a>
                         <a href="tel:+918899439997">
                             <i class="fas fa-phone"></i>
                             +91 8899439997 (ग्राहक सेवा)
                         </a>
-                        </div>
+                    </div>
                 </div>
                 </div>
 
