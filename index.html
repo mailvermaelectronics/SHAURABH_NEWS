@@ -1,1064 +1,1214 @@
 <!doctype html>
-
-<html lang="en">
+<html lang="hi">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" /> 
-  <title>Saurabh News</title>
-  <meta name="description" content="Professional news website UI/UX demo with slow-motion animations, mobile menu, mega-menu, video section and loading animation." />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
-  <style>
-    /* ----------------------------
-       Reset + Base
-       ---------------------------- */
-    :root{
-      --bg:#0b0b0b; /* deep black */
-      --panel:#0f0f0f;
-      --muted:#bfc3c6; /* grey for text */
-      --accent:#ffffff; /* white */
-      --highlight:#e6e6e6;
-      --brand:#111111;
-      --card:#121212;
-      --glass: rgba(255,255,255,0.04);
-      --shadow: 0 8px 24px rgba(0,0,0,0.6);
-      --radius:12px;
-      --max-w:1200px;
-      /* Slow transition speed (900ms) for slow-motion effect */
-      --transition: 900ms cubic-bezier(.25, .46, .45, .94); 
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      background:linear-gradient(180deg,#050505 0%, #0b0b0b 100%);
-      color:var(--accent);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      line-height:1.45;
-      font-size:16px;
-      /* FIX: Prevent horizontal scrollbar on the body for all views */
-      overflow-x: hidden; 
-    }
-    a{color:inherit;text-decoration:none}
-    img{max-width:100%;display:block}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" /> 
+    <title>AIN NEWS - एक आधुनिक हिंदी समाचार</title>
+    <meta name="description" content="एक सामान्य, आधुनिक हिंदी समाचार वेबसाइट" />
     
-    /* DESKTOP/LARGE SCREEN CONTAINER: Centered with max width and padding applied correctly. */
-    .container{
-      max-width:var(--max-w);
-      margin:0 auto;
-      /* FIX: DEFAULT DESKTOP PADDING: 20px on left/right. */
-      padding: 0 20px; 
-    }
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
     
-    /* Enhanced Animation base styles */
-    .animate-on-scroll{
-        opacity:0;
-        transform:translateY(80px) scale(0.9); 
-        transition:var(--transition);
-        transition-property:opacity,transform,box-shadow;
-    }
-    .animate-on-scroll.animated{
-        opacity:1;
-        transform:translateY(0) scale(1);
-    }
-    /* Slower staggered delays */
-    .delay-100{transition-delay:100ms} 
-    .delay-200{transition-delay:200ms} 
-    .delay-300{transition-delay:300ms} 
-
-    /* ----------------------------
-       Loading Screen
-       ---------------------------- */
-    #loader-wrap{
-        position:fixed;
-        inset:0;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        background:linear-gradient(180deg, #000 0%, #070707 100%);
-        z-index:9999;
-        transition:opacity 400ms ease,visibility 400ms;
-    }
-    #loader{
-        width:180px; 
-        height:180px;
-        border-radius:20px;
-        background:linear-gradient(135deg,#111,#222);
-        box-shadow:var(--shadow);
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        flex-direction:column;
-        text-align: center; 
-        perspective: 1000px;
-    }
-    .loader-name{
-        font-weight:900;
-        font-size:22px;
-        letter-spacing:1.5px;
-        white-space: nowrap; 
-        background: linear-gradient(90deg, #3498db, #2ecc71); 
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        color: #fff; 
-        margin-bottom: 10px; 
-    }
-    .loader-ring{
-        width:74px; 
-        height:74px;
-        border-radius:50%;
-        border:8px solid transparent; 
-        border-top-color: #3498db;
-        border-left-color: #2ecc71;
+    <style>
+        /* ----------------------------
+           Reset + Base
+           ---------------------------- */
+        :root{
+            --bg:#0b0b0b; 
+            --panel:#0f0f0f;
+            --muted:#bfc3c6; 
+            --accent:#ffffff; 
+            --highlight:#fefefe;
+            --brand-red:#e74c3c; /* AajTak-like color */
+            --brand-blue:#3498db;
+            --card:#121212;
+            --shadow: 0 6px 18px rgba(0,0,0,0.5);
+            --radius:10px;
+            --max-w:1200px;
+            /* Animation Transition added for smooth Up/Down effect */
+            --transition: 600ms cubic-bezier(.25, .46, .45, .94); 
+            font-family: 'Inter', sans-serif;
+        }
+        *{box-sizing:border-box}
+        body{
+            margin:0;
+            background:var(--bg);
+            color:var(--accent);
+            line-height:1.45;
+            font-size:16px;
+            overflow-x: hidden; 
+        }
+        a{color:inherit;text-decoration:none; transition: color 200ms}
+        a:hover{color:var(--highlight);}
+        img{max-width:100%;display:block;height:auto}
+        h1,h2,h3,h4{margin-top:0;}
         
-        animation:spin 1.5s linear infinite, glow-shadow 1.5s ease-in-out infinite;
-        margin-top:0; 
-        box-shadow: 0 0 10px rgba(52, 152, 219, 0.6), inset 0 0 10px rgba(46, 204, 113, 0.6);
-        transform-style: preserve-3d;
-    }
-    @keyframes spin{
-        0%{transform:rotateY(0deg) rotateX(0deg)}
-        50%{transform:rotateY(180deg) rotateX(180deg)}
-        100%{transform:rotateY(360deg) rotateX(360deg)}
-    }
-    @keyframes glow-shadow {
-        0%, 100% {box-shadow: 0 0 15px rgba(52, 152, 219, 0.9), inset 0 0 10px rgba(46, 204, 113, 0.9);}
-        50% {box-shadow: 0 0 5px rgba(52, 152, 219, 0.4), inset 0 0 5px rgba(46, 204, 113, 0.4);}
-    }
-
-    /* ----------------------------
-       Header / Nav 
-       ---------------------------- */
-    header{position:sticky;top:0;z-index:1000;background:linear-gradient(180deg, rgba(11,11,11,0.9), rgba(11,11,11,0.85));backdrop-filter:blur(6px);border-bottom:1px solid rgba(255,255,255,0.03)}
-    
-    .topbar{
-        display:flex;
-        align-items:center;
-        justify-content:space-between;
-        gap:16px;
-        /* Padding handled by .container */
-        padding:10px 0; 
-        align-items: center; 
-    }
-    
-    .brand{display:flex;align-items:center;gap:12px; flex-shrink: 0;}
-    .brand .logo{display:flex;flex-direction:column}
-    
-    /* Enhanced Channel Name Styling */
-    .logo .title{
-        font-weight:900;
-        font-size:24px;
-        letter-spacing:1.5px;
-        color: #e67e22; 
-        transition: color 0.5s ease;
-        animation: heading-glow-text 4s infinite alternate;
-    }
-    .logo .tag{font-size:12px;color:#f39c12;font-weight:600;margin-top:2px}
-    
-    @keyframes heading-glow-text {
-        0% { color: #e67e22; text-shadow: 0 0 8px rgba(230, 126, 34, 0.7), 0 0 12px rgba(230, 126, 34, 0.5); }
-        25% { color: #3498db; text-shadow: 0 0 8px rgba(52, 152, 219, 0.8), 0 0 12px rgba(52, 152, 219, 0.6); }
-        50% { color: #9b59b6; text-shadow: 0 0 10px rgba(155, 89, 182, 0.9), 0 0 15px rgba(155, 89, 182, 0.7); }
-        75% { color: #2ecc71; text-shadow: 0 0 10px rgba(46, 204, 113, 0.8), 0 0 15px rgba(46, 204, 113, 0.6); }
-        100% { color: #f39c12; text-shadow: 0 0 8px rgba(243, 156, 18, 0.7), 0 0 12px rgba(243, 156, 18, 0.5); }
-    }
-
-    /* nav and other styles... */
-    nav{display:flex;align-items:center;justify-content:flex-end;width:100%}
-    .nav-left{display:flex;align-items:center;gap:18px}
-    
-    /* FIX: Ensure categories are positioned relative for absolute mega menu positioning */
-    .categories{display:flex;gap:10px}
-    .cat{padding:8px 12px;border-radius:8px;background:transparent;color:var(--muted);font-weight:600;transition:all 250ms ease; position: relative;}
-    .cat:hover{background:var(--glass);color:var(--highlight);transform:translateY(-2px) scale(1.02)}
-    
-    /* FIX: Mega Menu Styling to open *OVER* the content */
-    .mega-panel{
-        position: absolute;
-        top: 100%; /* Position below the 'Top Stories' link */
-        left: 0;
-        z-index: 100;
-        width: 600px; /* Adjust width as needed */
-        background: var(--panel);
-        border: 1px solid rgba(255,255,255,0.05);
-        box-shadow: var(--shadow);
-        padding: 15px;
-        border-radius: 0 0 var(--radius) var(--radius);
-        display: none;
-        opacity: 0;
-        transform: translateY(10px);
-        transition: opacity 300ms, transform 300ms;
-    }
-    .mega:hover .mega-panel, .mega-panel.show{
-        display: flex;
-        opacity: 1;
-        transform: translateY(0);
-        gap: 20px;
-    }
-    .mega-card{
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-    .mega-card h4{
-        margin: 0 0 10px 0;
-        padding-bottom: 5px;
-        border-bottom: 2px solid #e74c3c;
-        font-size: 14px;
-        color: var(--highlight);
-    }
-    .mega-item{
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        transition: background 200ms;
-        padding: 5px;
-        border-radius: 6px;
-    }
-    .mega-item:hover{
-        background: rgba(255,255,255,0.05);
-    }
-    .mega-item img{
-        width: 50px;
-        height: 40px;
-        object-fit: cover;
-        border-radius: 4px;
-    }
-    .mega-item .meta{
-        font-size: 13px;
-        line-height: 1.3;
-    }
-    .mega-item .muted{
-        font-size: 11px;
-        color: var(--muted);
-    }
-
-
-    /* All link-buttons are defined as clickable for better UX */
-    .cat, .btn-login, .btn-subscribe, .hamburger {cursor:pointer;} 
-    
-    /* search + actions */
-    .nav-right{
-        display:flex;
-        align-items:center;
-        gap:12px;
-        align-self: center; 
-    }
-    .search{position:relative}
-    .search input{
-        background:transparent;
-        border:1px solid rgba(255,255,255,0.06);
-        padding:8px 12px;
-        border-radius:8px;
-        color:var(--accent);
-        width:180px;
-        outline:none;
-        transition:all 280ms;
-        /* FIX: Explicitly setting height for alignment with 38px buttons */
-        height: 38px; 
-    }
-    .search input:focus{width:260px;background:rgba(255,255,255,0.02)}
-    
-    /* General Button Styling (Base) - Height fixed for alignment */
-    .btn, .hamburger{
-        height: 38px; 
-        display: flex; 
-        align-items: center;
-        justify-content: center;
-        padding:0 12px; 
-        border-radius:8px;
-        border:none;
-        cursor:pointer;
-        transition:background 200ms, transform 150ms;
-        font-weight: 700;
-        color: #fff;
-        text-align: center;
-        text-decoration: none;
-        line-height: 1; 
-        white-space: nowrap; 
-    }
-
-    /* Login Button - Blue */
-    .btn-login{
-        background: linear-gradient(90deg, #3498db, #2980b9); 
-        box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
-    }
-    .btn-login:hover{
-        background: linear-gradient(90deg, #2980b9, #3498db);
-        transform:translateY(-1px) scale(1.01);
-        box-shadow: 0 6px 16px rgba(52, 152, 219, 0.6);
-    }
-    
-    /* Subscribe Button - Red/Orange */
-    .btn-subscribe{
-        background: linear-gradient(90deg, #e74c3c, #f39c12); 
-        box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
-    }
-    .btn-subscribe:hover{
-        background: linear-gradient(90deg, #f39c12, #e74c3c);
-        transform:translateY(-1px) scale(1.01);
-        box-shadow: 0 6px 16px rgba(231, 76, 60, 0.6);
-    }
-    
-    /* Hamburger Button - Default Look, Height Fixed */
-    .hamburger{
-        background: #1a1a1a;
-        color: var(--highlight);
-        border: 1px solid rgba(255,255,255,0.1);
-        padding: 0 12px; 
-        font-size: 16px; 
-        font-weight: normal;
-        box-shadow: none; 
-    }
-    .hamburger:hover{
-        background: #292929;
-        transform: scale(0.98);
-        box-shadow: none;
-    }
-
-
-    /* ----------------------------
-       Breaking Ticker
-       ---------------------------- */
-    .ticker{display:flex;align-items:center;background:#0b0b0b;border-top:1px solid rgba(255,255,255,0.02);
-      /* Padding handled by .container */
-      padding:8px 0; 
-    }
-    .ticker .label{background:#e74c3c;color:#fff;padding:6px 10px;border-radius:6px;margin-right:12px;font-weight:700;font-size:13px}
-    .ticker .label.live{background:#2ecc71;}
-    .ticker .scroll{overflow:hidden;flex:1}
-    .scroll .inner{display:inline-block;white-space:nowrap;animation:marquee 16s linear infinite}
-    @keyframes marquee{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
-    .scroll a{margin-right:48px;color:var(--muted);font-weight:600}
-    .scroll a:hover{color:var(--highlight)}
-
-    /* ----------------------------
-       Hero / Featured 
-       ---------------------------- */
-    .hero{display:grid;grid-template-columns:1fr 420px;gap:18px;
-      /* Padding handled by .container on desktop */
-      padding:22px 0;
-    }
-    
-    .feature-wrapper {
-        position: relative;
-        overflow: hidden;
-        border-radius: 14px;
-        box-shadow: var(--shadow);
-    }
-    .feature-slider {
-        display: flex;
-        width: 300%; 
-        transition: transform 0.8s ease-in-out;
-    }
-    .hero .feature{
-        flex-shrink: 0;
-        width: calc(100% / 3); 
-        background:linear-gradient(180deg,#0d0d0d,#0b0b0b);
-        padding:18px;
-        position:relative;
-        overflow:hidden;
-        transition:none; 
-    }
-
-    .feature img{height:360px;width:100%;object-fit:cover;border-radius:10px;transition:transform 600ms ease-out;}
-    .feature:hover img{transform:scale(1.03);}
-    .feature .kicker{position:absolute;left:18px;top:18px;background:rgba(0,0,0,0.6);padding:8px 10px;border-radius:8px;font-weight:700}
-    .feature h1{font-size:26px;margin:12px 0;transition:color 200ms}
-    .feature:hover h1{color:var(--highlight);}
-    .feature p{color:var(--muted);margin-bottom:8px}
-
-    .side-cards{display:grid;gap:12px}
-    .card{background:var(--card);padding:12px;border-radius:10px;display:flex;gap:10px;align-items:center;transition:var(--transition);transition-property:transform,box-shadow;}
-    .card:hover{transform:translateY(-8px) scale(1.01);box-shadow:0 16px 48px rgba(0,0,0,0.6)}
-    .card img{width:120px;height:80px;object-fit:cover;border-radius:8px}
-    .card h3{margin:0;font-size:15px;transition:color 200ms}
-    .card:hover h3{color:var(--highlight)}
-    .card .meta{font-size:13px;color:var(--muted)}
-
-    /* ----------------------------
-       Grid / Latest news
-       ---------------------------- */
-    .section{margin-top:22px}
-    
-    /* Carousel/Slider styling */
-    .grid-wrapper{
-      overflow-x:scroll;
-      padding-bottom:12px;
-      /* FIX: This must be 0px on desktop, padding is added by .container */
-      padding-right: 0;
-    } 
-    .grid-wrapper::-webkit-scrollbar{height:8px}
-    .grid-wrapper::-webkit-scrollbar-thumb{background-color:rgba(255,255,255,0.1);border-radius:10px}
-    .grid-wrapper::-webkit-scrollbar-track{background-color:rgba(0,0,0,0.2);border-radius:10px}
-
-    .grid{display:flex;gap:14px;}
-    .news-card{
-      background:linear-gradient(180deg,#0f0f0f,#0b0b0b);
-      padding:14px;
-      border-radius:10px;
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-      min-width:300px; /* Fixed width for slide effect */
-      max-width:300px;
-      transition:var(--transition);
-      transition-property:transform,box-shadow;
-    }
-    .news-card:hover{transform:translateY(-8px) scale(1.01);box-shadow:var(--shadow)}
-    .news-card .thumb{height:160px;border-radius:8px;overflow:hidden}
-    .news-card .thumb img{transition:transform 600ms ease-out;}
-    .news-card:hover .thumb img{transform:scale(1.05);}
-    .news-card h4{margin:0;transition:color 200ms}
-    .news-card:hover h4{color:var(--highlight)}
-    .news-card p{margin:0;color:var(--muted);font-size:14px}
-    
-    /* ----------------------------
-       LIVE Video Section
-       ---------------------------- */
-    .live-video-section{
-        display:grid;
-        grid-template-columns: 2fr 1fr;
-        gap: 18px;
-        padding-top: 22px;
-        /* Padding handled by .container on desktop */
-    }
-    .live-player-wrap{
-        background: #000;
-        border-radius: 14px;
-        overflow: hidden;
-        box-shadow: var(--shadow);
-    }
-    .live-feed-list{
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-    .live-feed-item{
-        background: var(--card);
-        padding: 10px;
-        border-radius: 10px;
-        display: flex;
-        gap: 10px;
-        align-items: center;
-        transition: transform 200ms;
-    }
-    .live-feed-item:hover{
-        background: #181818;
-        transform: translateX(4px);
-    }
-    .live-feed-item img{width: 80px; height: 50px; object-fit: cover; border-radius: 6px;}
-    .live-feed-item .meta{font-size: 13px;}
-    .live-tag{background: #e74c3c; color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: 700;}
-
-
-    /* ----------------------------
-       Regular Video Section
-       ---------------------------- */
-    .videos{
-      display:grid;
-      grid-template-columns:1fr 1fr 1fr;
-      gap:12px;
-      /* Padding handled by .container on desktop */
-    }
-    .vid{position:relative;border-radius:10px;overflow:hidden;cursor:pointer;transition:var(--transition);transition-property:transform,box-shadow;}
-    .vid:hover{transform:scale(1.03);box-shadow:var(--shadow)}
-    .vid img{height:180px;object-fit:cover;width:100%;transition:opacity 300ms, transform 600ms}
-    .vid:hover img{transform:scale(1.1);}
-    .play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.6);padding:14px;border-radius:999px;border:2px solid rgba(255,255,255,0.08);backdrop-filter:blur(4px);cursor:pointer;transition:transform 300ms, background 200ms}
-    .vid:hover .play{transform:translate(-50%,-50%) scale(1.15);background:rgba(255,255,255,0.1)}
-    .play:after{content:'▶';font-weight:700}
-
-    /* ----------------------------
-       Footer + Social Media
-       ---------------------------- */
-    footer{margin-top:36px;
-      /* Padding handled by .container on desktop */
-      padding:28px 0;
-      background:linear-gradient(180deg,#060606,#0b0b0b);border-top:1px solid rgba(255,255,255,0.02)}
-    .footer-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
-    .small{font-size:13px;color:var(--muted)}
-    .small a:hover{color:var(--highlight);text-decoration:underline}
-
-    /* Social Media Styles (FIX: Color changed to white/highlight to ensure visibility) */
-    .social-links{margin-top:15px; display: flex; gap:14px;}
-    .social-links a{
-        font-size: 20px;
-        color: #fff; 
-        transition: color 200ms, transform 200ms;
-    }
-    .social-links a:hover{
-        color: var(--highlight);
-        transform: translateY(-2px) scale(1.1);
-    }
-    /* FIX: Force Font Awesome font family to ensure display */
-    .social-links a i {
-        font-family: "Font Awesome 6 Brands" !important; 
-        font-weight: 400 !important; 
-    }
-    .social-links .fa-youtube:hover{color: #ff0000;}
-    .social-links .fa-twitter:hover{color: #1DA1F2;}
-    .social-links .fa-instagram:hover{background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
-    .social-links .fa-facebook:hover{color: #1877F2;}
-    .social-links .fa-telegram:hover{color: #0088CC;}
-
-    /* ----------------------------
-       WhatsApp Business Button (Floating)
-       ---------------------------- */
-    @keyframes zoomin-zoomout {
-        0%, 100% { 
-            transform: scale(1);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        /* DESKTOP/LARGE SCREEN CONTAINER */
+        .container{
+            max-width:var(--max-w);
+            margin:0 auto;
+            padding: 0 20px; 
         }
-        50% { 
-            transform: scale(1.08); 
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+
+        /* ----------------------------
+           Animation Styles (Up/Down Scroll)
+           ---------------------------- */
+        .animate-on-scroll{
+            opacity:0;
+            transform:translateY(80px) scale(0.95); 
+            transition:var(--transition);
+            transition-property:opacity,transform,box-shadow;
         }
-    }
-
-    .whatsapp-btn {
-        position: fixed;
-        bottom: 80px; 
-        right: 25px; 
-        z-index: 1500;
-        background-color: #25D366; 
-        color: white;
-        width: 55px; 
-        height: 55px; 
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 28px;
-        animation: zoomin-zoomout 1.0s ease-in-out infinite; 
-        transition: none; 
-        visibility: visible;
-        opacity: 1;
-    }
-    
-    .whatsapp-btn i { 
-        color: #fff !important; 
-        transform: none !important;
-        font-family: "Font Awesome 6 Brands" !important; 
-        font-weight: 400 !important; 
-    }
-
-    .whatsapp-btn:hover {
-        transform: scale(1.15); 
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.7);
-        animation: none; 
-    }
-    
-    /* ----------------------------
-       Mobile Menu Overlay 
-       ---------------------------- */
-    .mobile-menu{
-        position: fixed; 
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        transform: translateX(100%);
-        opacity: 0;
-        visibility: hidden;
-        transition: transform 300ms ease-in-out, opacity 300ms;
-        background: rgba(11, 11, 11, 0.98);
-        backdrop-filter: blur(8px);
-        z-index: 2000;
-        padding: 20px;
-        overflow-y: auto; 
-    }
-    .mobile-menu.open{
-        transform: translateX(0);
-        opacity: 1;
-        visibility: visible;
-    }
-    .mobile-menu .logo-mark{
-      font-weight: 900;
-      font-size: 24px;
-      color: #e67e22; 
-    }
-    .mobile-list{
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      margin-top: 20px;
-    }
-    .mobile-list a{
-      font-size: 18px;
-      font-weight: 600;
-      padding: 10px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      transition: color 200ms;
-    }
-    .mobile-list a:hover{
-      color: var(--highlight);
-    }
-
-    /* ----------------------------
-       Responsive/Mobile Adjustments (FULLY OPTIMIZED)
-       ---------------------------- */
-    @media (max-width:820px){
-      
-      /* 1. CONTAINER FIX: Remove horizontal padding from the container on mobile to allow full-width content */
-      .container{
-        padding: 0; 
-        max-width: 100%; 
-      }
-      
-      /* 2. APPLY PADDING TO CHILD ELEMENTS (10px) for inner spacing */
-      .topbar{
-        padding:10px 10px; 
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center; 
-      }
-      .ticker{
-        padding: 8px 10px;
-      }
-      /* Apply padding directly to the sections/grids that need inner spacing on mobile */
-      .hero{
-        grid-template-columns:1fr; 
-        padding: 22px 10px; 
-      }
-      .live-video-section{
-        grid-template-columns: 1fr; 
-        padding: 22px 10px 0 10px; 
-      }
-      .videos{
-        grid-template-columns:1fr; 
-        padding: 0 10px 22px 10px;
-      }
-      .section{
-          /* FIX: Ensure vertical spacing is correct and padding is applied */
-          padding: 0 10px; 
-          margin-top: 22px;
-      }
-      
-      /* FIX: Scrollable Grid Wrapper for "Opinion & Editorials" - This was causing the right gap */
-      .grid-wrapper {
-        overflow-x:scroll;
-        /* Only padding-left (10px) is needed for the first card. */
-        padding-left: 10px;
-        padding-bottom: 12px;
-        /* FIX: padding-right must be 0 for mobile full-fill */
-        padding-right: 0; 
-      }
-      /* Ensure the news cards themselves do not have external margins */
-      .grid{
-          padding: 0;
-      }
-
-      /* Footer padding adjustment for mobile */
-      footer {
-          padding: 28px 10px;
-      }
-      
-      /* Hide elements not needed on mobile */
-      .search input{display:none}
-      .categories{display:none;}
-      nav{justify-content: flex-end;}
-      .nav-left{gap:0;}
-      .hamburger{display:inline-flex; order: 1;}
-      .footer-grid{grid-template-columns: 1fr;}
-
-      /* Button sizing - kept small for mobile */
-      .nav-right {
-        gap: 5px; 
-        align-self: center; 
-      }
-      .btn {
-          height: 38px; 
-          padding: 0 10px; 
-          font-size: 13px; 
-      }
-      
-      /* WhatsApp button position on mobile */
-      .whatsapp-btn {
-        bottom: 45px; 
-        right: 10px; 
-        width: 45px; 
-        height: 45px;
-        font-size: 22px;
-      }
-    }
-    
-    /* Larger tablets/smaller desktops */
-    @media (min-width: 821px) and (max-width:1100px){
-      /* Adjust container padding for intermediate screens */
-      .container {
-          padding: 0 15px; 
-      }
-      .hero{grid-template-columns:1fr 320px; padding: 22px 0}
-      .live-video-section{grid-template-columns: 1fr;}
-      .videos{grid-template-columns:repeat(2,1fr)}
-    }
-
-    /* FIX: Desktop Mega Menu Position Correction */
-    @media (min-width: 821px) {
-        /* FIX: Topbar padding must align content with container padding */
-        .topbar {
-            padding: 10px 0;
+        .animate-on-scroll.animated{
+            opacity:1;
+            transform:translateY(0) scale(1);
         }
-        /* FIX: Ensure search/buttons are vertically aligned with the navigation links */
-        .nav-right {
-            align-items: center; 
+        /* Staggered delays for staggered loading effect */
+        .delay-100{transition-delay:100ms} 
+        .delay-200{transition-delay:200ms} 
+        .delay-300{transition-delay:300ms} 
+        .delay-400{transition-delay:400ms} 
+        .delay-500{transition-delay:500ms} 
+        .delay-600{transition-delay:600ms} 
+        .delay-700{transition-delay:700ms} 
+
+
+        /* ----------------------------
+           Header / Nav 
+           ---------------------------- */
+        header{
+            position:sticky;
+            top:0;
+            z-index:1000;
+            background:linear-gradient(180deg, rgba(11,11,11,0.95), rgba(11,11,11,0.9));
+            backdrop-filter:blur(6px);
+            border-bottom:1px solid rgba(255,255,255,0.03);
         }
-        /* FIX: Ensure the mega menu panel stays within the container and doesn't affect main content flow */
-        .mega {
-             /* Needs position: relative to contain the mega-panel */
-             position: relative; 
+        .topbar{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            padding:12px 0; 
+            gap: 15px;
         }
-        /* Override mobile display setting for mega menu to use desktop hover effect */
-        .mega-panel.show {
+        
+        /* --- BRAND NEW LOGO STYLES (AIN NEWS) --- */
+        .brand .title{
+            font-family: 'Inter', sans-serif;
+            font-weight:900;
+            font-size:28px;
+            letter-spacing:1px;
+            color: var(--highlight); /* White text */
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); /* Subtle white glow */
+            white-space: nowrap;
+            display: none; /* Hide text if logo is shown */
+        }
+        .logo-img {
+            height: 35px; /* Adjust size as needed */
+            width: auto;
+            max-width: 150px;
+            filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.5)); /* Subtle shadow for transparent logo */
+        }
+        /* --- END LOGO STYLES --- */
+
+
+        .nav-links{
+            display:flex;
+            gap:20px;
+            align-items:center;
+            flex-grow: 1;
+        }
+        .cat{
+            padding:8px 0;
+            color:var(--muted);
+            font-weight:600;
+            position: relative;
+        }
+        /* REMOVED: .cat::after, .cat:hover::after, .cat.active::after styles to remove the line */
+        
+        .cat:hover, .cat.active{
+            color: var(--highlight);
+        }
+
+        /* Search and Actions */
+        .nav-actions{
+            display:flex;
+            align-items:center;
+            gap:10px;
+        }
+        #search-input-wrapper {
+            width: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: width 300ms ease-in-out, opacity 300ms;
+        }
+
+        #search-input-wrapper.open {
+            width: 250px; 
+            opacity: 1;
+            margin-right: 10px;
+        }
+
+        #search-input-wrapper input {
+            width: 100%;
+            padding: 8px 12px;
+            background: #222;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            color: var(--accent);
+            outline: none;
+            font-size: 15px;
+        }
+        
+        .search-icon{
+            background:transparent;
+            border:1px solid rgba(255,255,255,0.1);
+            color:var(--muted);
+            width:38px;height:38px;
+            display:flex;align-items:center;justify-content:center;
+            border-radius:8px;
+            cursor:pointer;
+            transition:var(--transition);
+            position: static; 
+            z-index: auto; 
+        }
+        .search-icon:hover{
+            background:rgba(255,255,255,0.05);
+            color:var(--highlight);
+            transform: scale(1.05);
+        }
+
+        .btn-live{
+            background:var(--brand-red);
+            padding:8px 12px;
+            border-radius:8px;
+            font-weight:700;
+            display:flex;
+            align-items:center;
+            gap:5px;
+            transition:var(--transition);
+        }
+        .btn-live:hover{
+            background:#c0392b;
+            transform: translateY(-1px) scale(1.01);
+            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.4);
+        }
+        .hamb-btn{
+            display:none;
+            cursor: pointer;
+        } 
+
+        /* Breaking Ticker */
+        .ticker{
+            display:flex;
+            align-items:center;
+            background:#1a1a1a;
+            padding:8px 0; 
+            border-top:1px solid rgba(255,255,255,0.05);
+        }
+        .ticker .label{
+            background:var(--brand-red);
+            color:#fff;
+            padding:6px 10px;
+            border-radius:6px;
+            margin-right:12px;
+            font-weight:700;
+            font-size:14px;
+            flex-shrink: 0;
+        }
+        .ticker .scroll-area{
+            overflow:hidden;
+            flex:1;
+        }
+        .scroll-area .inner{
+            display:inline-block;
+            white-space:nowrap;
+            animation:marquee 20s linear infinite;
+        }
+        @keyframes marquee{
+            0%{transform:translateX(100%)}
+            100%{transform:translateX(-100%)}
+        }
+        .scroll-area a{
+            margin-right:48px;
+            color:var(--highlight);
+            font-weight:500;
+        }
+        .scroll-area a span{
+            color:var(--muted);
+            margin-right:8px;
+        }
+
+
+        /* ----------------------------
+           Main Layout & Grids (No Change)
+           ---------------------------- */
+        main{padding: 25px 0;}
+        
+        .main-grid{
+            display:grid;
+            grid-template-columns: 2fr 1fr; 
+            gap: 25px;
+        }
+
+        /* ----------------------------
+           Hero/Feature Section (No Change)
+           ---------------------------- */
+        .hero-left{
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .feature-wrapper{
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+        .feature-slider {
+            display: flex;
+            width: 300%; 
+            transition: transform 0.8s ease-in-out;
+        }
+        .feature-slider .feature-card {
+            flex-shrink: 0;
+            width: calc(100% / 3); 
+            margin: 0;
+            box-shadow: none; 
+            transition: none; 
+            transform: none;
+            border-radius: 0;
+        }
+
+        .feature-card{
+            background: var(--card);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 300ms ease;
+        }
+        .feature-card:hover{
+            transform: translateY(-5px);
+        }
+        .feature-card img{
+            height: 380px;
+            width: 100%;
+            object-fit: cover;
+            transition: transform 600ms ease-out;
+        }
+        .feature-card:hover img{
+            transform: scale(1.05);
+        }
+        .feature-content{
+            padding: 18px;
+        }
+        .feature-content h1{
+            font-size: 28px;
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+        .feature-content .meta{
+            color: var(--muted);
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .feature-content p{
+            color: var(--muted);
+            font-size: 16px;
+        }
+        
+        .sub-hero-grid{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .sub-card{
+            background: var(--card);
+            padding: 15px;
+            border-radius: var(--radius);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: var(--transition);
+        }
+        .sub-card:hover{
+            background: #181818;
+            transform: scale(1.01);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        .sub-card img{
+            height: 120px;
+            width: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .sub-card h3{
+            font-size: 18px;
+            line-height: 1.3;
+        }
+        .sub-card .meta{
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        /* ----------------------------
+           Sidebar (No Change)
+           ---------------------------- */
+        .sidebar h2{
+            font-size: 22px;
+            color: var(--highlight); 
+            padding-bottom: 5px;
+            border-bottom: 2px solid var(--brand-red);
+            margin-bottom: 15px;
+        }
+        .sidebar-list{
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .sidebar-item{
+            display: flex;
+            gap: 12px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed rgba(255,255,255,0.1);
+        }
+        .sidebar-item:last-child{
+            border-bottom: none;
+        }
+        .sidebar-item img{
+            width: 100px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 6px;
+            flex-shrink: 0;
+            transition: transform 300ms ease;
+        }
+        .sidebar-item:hover img{
+            transform: scale(1.05);
+        }
+        .sidebar-item h4{
+            font-size: 16px;
+            line-height: 1.3;
+            margin: 0;
+        }
+        .sidebar-item .meta{
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        /* ----------------------------
+           Video Section (No Change)
+           ---------------------------- */
+        .section-header{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+            padding-bottom: 8px;
+        }
+        .section-header h2{
+            font-size: 24px;
+            color: var(--brand-red);
+            font-weight: 700;
+            margin: 0;
+        }
+        .section-header a{
+            font-size: 14px;
+            color: var(--brand-blue);
+            font-weight: 600;
+        }
+
+        .video-grid{
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        .vid-card{
+            position:relative;
+            border-radius:var(--radius);
+            overflow:hidden;
+            cursor:pointer;
+            transition:var(--transition);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .vid-card:hover{
+            transform:translateY(-5px) scale(1.02);
+            box-shadow:var(--shadow);
+        }
+        .vid-card img{
+            height:160px;
+            object-fit:cover;
+            width:100%;
+            transition:transform 600ms ease-out;
+        }
+        .vid-card:hover img{
+            transform:scale(1.1);
+        }
+        .play-btn{
+            position:absolute;
+            left:50%;top:50%;
+            transform:translate(-50%,-50%);
+            background:rgba(0,0,0,0.7);
+            padding:12px;
+            border-radius:999px;
+            border:2px solid rgba(255,255,255,0.1);
+            backdrop-filter:blur(4px);
+            color: #fff;
+            font-size: 18px;
+        }
+        .vid-card-content{
+            padding: 10px;
+            background: var(--card);
+        }
+        .vid-card h4{
+            font-size: 15px;
+            margin: 0;
+            line-height: 1.3;
+        }
+        .vid-card .meta{
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 5px;
+        }
+
+        /* ----------------------------
+           Footer (Updated Contact Styles)
+           ---------------------------- */
+        footer{
+            margin-top:36px;
+            padding:30px 0;
+            background:linear-gradient(180deg,#060606,#0b0b0b);
+            border-top:1px solid rgba(255,255,255,0.02);
+        }
+        .footer-grid{
+            /* Adjusted grid columns to 4 to accommodate the extra number */
+            display:grid;
+            grid-template-columns:2fr 1fr 1fr 1.5fr; 
+            gap:20px;
+        }
+        .footer-col h3{
+            color: var(--brand-red);
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        .footer-col ul{
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .footer-col a{
+            font-size: 14px;
+            color: var(--muted);
+        }
+        .footer-col a:hover{
+            color: var(--highlight);
+            text-decoration: underline;
+        }
+        .social-links{
+            margin-top:15px; 
+            display: flex; 
+            gap:18px;
+        }
+        .social-links a{
+            font-size: 22px;
+            color: var(--muted); 
+            transition: color 200ms, transform 200ms;
+        }
+        .social-links a:hover{
+            color: var(--brand-red);
+            transform: translateY(-2px) scale(1.1);
+        }
+        /* UPDATED: Contact Info Styles */
+        .contact-info a{
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            color: var(--highlight);
+            font-weight: 500;
+        }
+        .contact-info a i{
+            /* Base style for icons */
+            font-size: 20px; 
+            width: 25px; 
+            text-align: center;
+            transition: color 200ms;
+        }
+        /* New: Specific icon colors based on user image/request */
+        .contact-info .fa-phone, .contact-info .fa-phone-alt, .contact-info .fa-phone-volume {
+            color: #25d366; /* Green for Call */
+        }
+        .contact-info .fa-envelope, .contact-info .fa-at {
+            color: #e74c3c; /* Red/Orange for Mail */
+        }
+
+        .contact-info p{
+            line-height: 1.2;
+        }
+
+        .copyright{
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            margin-top: 20px;
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        /* ----------------------------
+           Mobile Menu Overlay (No Change)
+           ---------------------------- */
+        #mobile-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            padding: 20px;
             display: none;
             opacity: 0;
-            transform: translateY(10px);
+            transition: opacity 300ms ease;
+            overflow-y: auto;
         }
-    }
-  </style>
+        #mobile-menu-overlay.open {
+            display: block;
+            opacity: 1;
+        }
+        .mobile-menu-content {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .mobile-menu-content a {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--highlight);
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        #close-menu {
+            float: right;
+            background: var(--brand-red);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+        }
+        
+        /* ===========================================
+           FIXED WHATSAPP BUTTON STYLES (ANIMATION FASTER)
+           =========================================== */
+        #whatsapp-button {
+            position: fixed;
+            right: 20px;
+            bottom: 80px; 
+            z-index: 1500;
+            width: 60px;
+            height: 60px;
+            background-color: #25d366; /* WhatsApp Green */
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            font-size: 30px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform 0.15s ease-in-out; 
+            /* Faster Animation: changed 2s to 1s */
+            animation: zoom-fast 1s infinite ease-in-out; 
+        }
+        
+        #whatsapp-button:hover {
+            transform: scale(1.15); 
+        }
+
+        @keyframes zoom-fast {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        /* ===========================================
+           END WHATSAPP BUTTON STYLES
+           =========================================== */
+        
+        /* ===========================================
+           NEW: FIXED BOTTOM MOBILE NAV STYLES
+           =========================================== */
+        #bottom-nav {
+            display: none; /* Hide by default */
+        }
+        
+        /* ----------------------------
+           Mobile Responsive (Media Query)
+           ---------------------------- */
+        @media (max-width: 900px) {
+            
+            /* General Padding/Container Fix */
+            .container{
+                padding: 0 10px; 
+            }
+            .topbar, .ticker{
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+            .ticker{
+                padding-top: 5px;
+                padding-bottom: 5px;
+            }
+
+            /* Header Adjustments */
+            .nav-links{display: none;} /* **HIDE DESKTOP MENU LINKS** */
+            /* .hamb-btn removed */
+            .brand .title{display: none;} /* Always hide text on mobile when logo is used */
+            .logo-img {height: 30px;} /* Smaller logo on mobile */
+            .btn-live{padding: 6px 10px; font-size: 14px;}
+            .search-icon{width: 35px; height: 35px;}
+            
+            /* Mobile Search Bar Behavior */
+            #search-input-wrapper.open {
+                width: 150px; /* Smaller width on mobile */
+                margin-right: 5px;
+            }
+            
+            /* Main Grid Collapse */
+            .main-grid{
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            /* Add padding to the bottom of the main content so it is not hidden by the bottom-nav */
+            main {
+                padding-bottom: 80px; 
+            }
+
+            /* Hero/Feature */
+            .feature-card img{height: 250px;}
+            .feature-content h1{font-size: 22px;}
+            .sub-hero-grid{
+                grid-template-columns: 1fr; 
+                gap: 10px;
+            }
+            .sub-card img{height: 100px;}
+            .sub-card h3{font-size: 16px;}
+
+            /* Sidebar */
+            .sidebar h2{margin-top: 20px;}
+            .sidebar-item img{width: 80px; height: 60px;}
+            .sidebar-item h4{font-size: 15px;}
+            
+            /* Video Section */
+            .section-header h2{font-size: 20px;}
+            .video-grid{
+                grid-template-columns: 1fr 1fr; 
+                gap: 15px;
+            }
+            .vid-card img{height: 120px;}
+            .vid-card-content h4{font-size: 14px;}
+
+            /* Footer */
+            footer{padding: 20px 10px;}
+            .footer-grid{
+                grid-template-columns: 1fr; /* Collapse footer grid to single column on mobile */
+            }
+            .footer-col h3{margin-top: 15px;}
+            
+            /* WhatsApp Button position adjustment for mobile */
+            #whatsapp-button {
+                right: 10px;
+                bottom: 80px; /* Kept high for mobile, above the new bottom bar */
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+            }
+            
+            /* **SHOW FIXED BOTTOM MOBILE NAV** */
+            #bottom-nav {
+                display: block; /* Show only on mobile */
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                z-index: 1000; /* Above everything except maybe modal/whatsapp */
+                background: var(--card); 
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3);
+                padding: 5px 0;
+            }
+            
+            #bottom-nav .nav-list {
+                display: flex;
+                justify-content: space-around;
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            #bottom-nav .nav-item {
+                text-align: center;
+                flex: 1; /* Equal width for all items */
+            }
+
+            #bottom-nav a {
+                display: block;
+                padding: 8px 0;
+                color: var(--muted);
+                font-size: 12px;
+                font-weight: 500;
+                transition: color 200ms;
+            }
+
+            #bottom-nav a i {
+                display: block;
+                font-size: 18px;
+                margin-bottom: 3px;
+            }
+
+            #bottom-nav a:hover, #bottom-nav a.active {
+                color: var(--highlight);
+            }
+            
+            #bottom-nav a.active {
+                color: var(--brand-red); /* Active link highlight */
+            }
+            
+            /* Hide the mobile menu overlay since the bottom bar replaces it */
+            #mobile-menu-overlay {
+                display: none !important;
+            }
+        }
+
+    </style>
 </head>
 <body>
-  <div id="loader-wrap">
-    <div id="loader">
-      <div class="loader-name">SAURABH NEWS</div>
-      <div class="loader-ring" aria-hidden="true"></div>
-    </div>
-  </div>
 
-  <header>
-    <div class="topbar container">
-      <div class="brand">
-        <div class="logo">
-          <div class="title">SAURABH NEWS</div>
-          <div class="tag">Breaking • National • World</div>
-        </div>
-      </div>
-      <nav>
-        <div class="nav-left">
-          <div class="categories">
-            <a href="#" class="cat mega">Top Stories
-              <div class="mega-panel" id="megaPanel">
-                <div class="mega-card">
-                  <h4>Latest</h4>
-                  <a href="#" class="mega-item"><img src="https://picsum.photos/200/120?random=1" alt=""><div class="meta"><strong>Headline one</strong><div class="muted">2h ago</div></div></a>
-                  <a href="#" class="mega-item"><img src="https://picsum.photos/200/120?random=2" alt=""><div class="meta"><strong>Headline two</strong><div class="muted">4h ago</div></div></a>
+    <header>
+        <div class="topbar container">
+            <div class="brand">
+                <img src="res/logo.png" alt="AIN NEWS Logo" class="logo-img">
+                <div class="title">AIN NEWS</div> </div>
+            
+            <nav class="nav-links">
+                <a href="#" class="cat active">देश</a>
+                <a href="#" class="cat">दुनिया</a>
+                <a href="#" class="cat">राज्य</a>
+                <a href="#" class="cat">खेल</a>
+                <a href="#" class="cat">व्यापार</a>
+                <a href="#" class="cat">मनोरंजन</a>
+            </nav>
+
+            <div class="nav-actions">
+                
+                <div id="search-input-wrapper">
+                    <input type="search" id="search-input-field" placeholder="खबरें खोजें..." />
                 </div>
-                <div class="mega-card">
-                  <h4>Opinion</h4>
-                  <a href="#" class="mega-item"><img src="https://picsum.photos/200/120?random=3" alt=""><div class="meta"><strong>Column: Economy</strong><div class="muted">By Ankit</div></div></a>
+                
+                <div class="search-icon" id="search-toggle">
+                    <i class="fas fa-search"></i>
                 </div>
-                <div class="mega-card">
-                  <h4>Most Read</h4>
-                  <a href="#" class="mega-item"><img src="https://picsum.photos/200/120?random=4" alt=""><div class="meta"><strong>Most read headline</strong><div class="muted">12k views</div></div></a>
+                
+                <a href="#" class="btn-live"><i class="fas fa-circle-play"></i> LIVE TV</a>
                 </div>
-              </div>
-            </a>
-            <a href="#" class="cat">India</a>
-            <a href="#" class="cat">World</a>
-            <a href="#" class="cat">Politics</a>
-            <a href="#" class="cat">Business</a>
-          </div>
-          <a href="#" class="hamburger" id="hambBtn">☰</a>
         </div>
 
-        <div class="nav-right">
-          <div class="search"><input type="search" placeholder="Search news, topics..."></div>
-          <a href="#" class="btn btn-login">Login</a>
-          <a href="#" class="btn btn-subscribe">Subscribe</a>
+        <div class="ticker">
+            <div class="container" style="display:flex; width: 100%; align-items:center;">
+                <div class="label">ब्रेकिंग</div>
+                <div class="scroll-area">
+                    <div class="inner">
+                        <a href="#"><span>•</span> वित्त मंत्री ने 5000 करोड़ रुपये के नए आर्थिक पैकेज की घोषणा की।</a>
+                        <a href="#"><span>•</span> उत्तरी राज्यों में भारी बर्फबारी के कारण जनजीवन अस्त-व्यस्त।</a>
+                        <a href="#"><span>•</span> क्रिकेट विश्व कप फाइनल में भारत ने ऑस्ट्रेलिया को हराया, देश में जश्न।</a>
+                    </div>
+                </div>
+            </div>
         </div>
-      </nav>
+    </header>
+
+    <div id="mobile-menu-overlay" style="display: none;">
+        <a href="#" id="close-menu">✕</a>
+        <div class="brand" style="margin-bottom: 20px;"><img src="https://via.placeholder.com/150x50/0b0b0b/ffffff?text=AIN+NEWS+Logo" alt="AIN NEWS Logo" class="logo-img"></div>
+        <div class="mobile-menu-content">
+            <a href="#">देश (होम)</a>
+            <a href="#">दुनिया</a>
+            <a href="#">राज्य</a>
+            <a href="#">खेल</a>
+            <a href="#">व्यापार</a>
+            <a href="#">मनोरंजन</a>
+            <hr style="border-color: rgba(255,255,255,0.05); margin: 10px 0;">
+            <a href="#" style="color: var(--brand-red);">🔴 LIVE TV देखें</a>
+            <a href="#"> </a>
+        </div>
     </div>
-
-    <div class="ticker container">
-      <div class="label live">LIVE</div>
-      <div class="scroll"><div class="inner"><a href="#">Major earthquake strikes coastal city — rescue operations underway.</a><a href="#">Stock markets slide on global recession fears.</a><a href="#">Election results: close finish in three states.</a></div></div>
-    </div>
-
-  </header>
-
-  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px"><div class="logo-mark">SAURABH NEWS</div><a href="#" id="closeMobile" class="btn btn-login">✕</a></div>
-    <nav class="mobile-list">
-      <a href="#">Top Stories</a>
-      <a href="#">India</a>
-      <a href="#">World</a>
-      <a href="#">Politics</a>
-      <a href="#">Business</a>
-      <a href="#">Sports</a>
-      <a href="#">Entertainment</a>
-    </nav>
-  </div>
-
-  <main class="container">
-    <section class="hero">
-      <div class="feature-wrapper animate-on-scroll">
-        <div class="feature-slider" id="heroSlider">
-          
-          <article class="feature" aria-labelledby="feat-title-1">
-            <a href="#"><div class="kicker tag-red">Exclusive: Analysis</div></a>
-            <a href="#"><img src="https://picsum.photos/1200/700?random=10" alt="Featured image 1" loading="lazy"></a>
-            <a href="#"><h1 id="feat-title-1">In-depth: How policy changes are reshaping the economy</h1></a>
-            <p class="muted">By Editorial Desk • 3h ago</p>
-            <p class="muted">A concise summary of the story to draw readers in — crisp, fact-first, and compelling. This featured piece includes analysis, expert comments and live updates.</p>
-          </article>
-
-          <article class="feature" aria-labelledby="feat-title-2">
-            <a href="#"><div class="kicker tag-red">Exclusive: Breaking</div></a>
-            <a href="#"><img src="https://picsum.photos/1200/700?random=15" alt="Featured image 2" loading="lazy"></a>
-            <a href="#"><h1 id="feat-title-2">Global Tensions Rise Over Latest Trade Dispute</h1></a>
-            <p class="muted">By International Desk • 1h ago</p>
-            <p class="muted">World powers are scrambling to find a diplomatic resolution as tariffs escalate, threatening global supply chains.</p>
-          </article>
-
-          <article class="feature" aria-labelledby="feat-title-3">
-            <a href="#"><div class="kicker tag-red">Exclusive: Culture</div></a>
-            <a href="#"><img src="https://picsum.photos/1200/700?random=16" alt="Featured image 3" loading="lazy"></a>
-            <a href="#"><h1 id="feat-title-3">New Documentary Shines Light on Forgotten History</h1></a>
-            <p class="muted">By Arts & Culture • 5h ago</p>
-            <p class="muted">Filmmaker explores the hidden archives of the region, revealing untold stories of resilience and change.</p>
-          </article>
-
-        </div>
-      </div>
-      <aside class="side-cards">
-        <a href="#" class="card animate-on-scroll delay-100"><img src="https://picsum.photos/320/200?random=11" alt=""><div><h3>State government passes new bill</h3><div class="meta muted">1h ago • Politics</div></div></a>
-        <a href="#" class="card animate-on-scroll delay-200"><img src="https://picsum.photos/320/200?random=12" alt=""><div><h3>Climate summit: Key takeaways</h3><div class="meta muted">4h ago • World</div></div></a>
-        <a href="#" class="card animate-on-scroll delay-300"><img src="https://picsum.photos/320/200?random=13" alt=""><div><h3>Sports roundup: Local teams rise</h3><div class="meta muted">2h ago • Sports</div></div></a>
-      </aside>
-    </section>
     
-    <section class="section">
-        <h2>🔴 LIVE Updates & Streaming</h2>
-        <div class="live-video-section">
-            <div class="live-player-wrap animate-on-scroll delay-100">
-                <iframe width="100%" height="450" src="https://www.youtube.com/embed/jfKfPfyBkHw?autoplay=1&mute=1&controls=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="border-radius: 14px 14px 0 0;"></iframe>
-            </div>
-            <div class="live-feed-list animate-on-scroll delay-200">
-                <a href="#" class="live-feed-item animate-on-scroll delay-200">
-                    <img src="https://picsum.photos/160/100?random=51" alt="">
-                    <div><div class="live-tag">LIVE</div><h4>Prime Minister's Address on Economy</h4><div class="muted">5 min ago</div></div>
-                </a>
-                <a href="#" class="live-feed-item animate-on-scroll delay-300">
-                    <img src="https://picsum.photos/160/100?random=52" alt="">
-                    <div><div class="live-tag">LIVE</div><h4>Weather Alert: Cyclone approaching coast</h4><div class="muted">15 min ago</div></div>
-                </a>
-                <a href="#" class="live-feed-item animate-on-scroll delay-400">
-                    <img src="https://picsum.photos/160/100?random=53" alt="">
-                    <div><h4>Recent Coverage: State Poll Results</h4><div class="muted">3h ago</div></div>
-                </a>
-                <a href="#" class="live-feed-item animate-on-scroll delay-500">
-                    <img src="https://picsum.photos/160/100?random=54" alt="">
-                    <div><h4>Global Market Open Discussion</h4><div class="muted">1h ago</div></div>
-                </a>
-            </div>
+    <main class="container">
+        
+        <div class="main-grid">
+            
+            <section class="hero-left">
+                
+                <div class="feature-wrapper animate-on-scroll" id="heroSliderWrapper">
+                    <div class="feature-slider" id="heroSlider">
+                        
+                        <a href="#" class="feature-card">
+                            <img src="https://picsum.photos/1200/700?random=81" alt="मुख्य खबर">
+                            <div class="feature-content">
+                                <p class="meta">देश | 1 घंटा पहले</p>
+                                <h1>आगामी चुनावों को लेकर राजनीतिक गलियारों में हलचल, पीएम का बड़ा बयान।</h1>
+                                <p>मुख्य विपक्षी दलों ने एक संयुक्त मोर्चा बनाने का फैसला किया है, जबकि सत्तारूढ़ पार्टी ने विकास के एजेंडे पर जोर दिया है...</p>
+                            </div>
+                        </a>
+                        
+                        <a href="#" class="feature-card">
+                            <img src="https://picsum.photos/1200/700?random=182" alt="दूसरी मुख्य खबर">
+                            <div class="feature-content">
+                                <p class="meta">दुनिया | 3 घंटे पहले</p>
+                                <h1>अंतर्राष्ट्रीय बाजार में सोने के दाम रिकॉर्ड स्तर पर पहुंचे, निवेशकों में चिंता।</h1>
+                                <p>भू-राजनीतिक तनाव और अमेरिकी फेडरल रिजर्व की नीतियों के कारण कीमती धातुओं की माँग बढ़ी है...</p>
+                            </div>
+                        </a>
+
+                        <a href="#" class="feature-card">
+                            <img src="https://picsum.photos/1200/700?random=183" alt="तीसरी मुख्य खबर">
+                            <div class="feature-content">
+                                <p class="meta">खेल | 20 मिनट पहले</p>
+                                <h1>भारत ने विश्व चैंपियनशिप में नया कीर्तिमान स्थापित किया, युवा खिलाड़ियों का जलवा।</h1>
+                                <p>टीम की जीत के बाद देश भर में जश्न का माहौल है, कोच ने रणनीति को सफलता का श्रेय दिया...</p>
+                            </div>
+                        </a>
+
+                    </div>
+                </div>
+                <div class="sub-hero-grid">
+                    
+                    <a href="#" class="sub-card animate-on-scroll delay-100">
+                        <img src="https://picsum.photos/400/250?random=82" alt="छोटी खबर 1">
+                        <h3>दिल्ली में वायु प्रदूषण का स्तर खतरनाक, GRAP 4 लागू।</h3>
+                        <p class="meta">पर्यावरण | 30 मिनट पहले</p>
+                    </a>
+
+                    <a href="#" class="sub-card animate-on-scroll delay-200">
+                        <img src="https://picsum.photos/400/250?random=83" alt="छोटी खबर 2">
+                        <h3>शेयर बाजार में रिकॉर्ड उछाल, सेंसेक्स पहली बार 75,000 के पार।</h3>
+                        <p class="meta">व्यापार | 15 मिनट पहले</p>
+                    </a>
+                    
+                </div>
+            </section>
+            
+            <aside class="sidebar">
+                <h2>🔥 ट्रेंडिंग न्यूज़</h2>
+                <div class="sidebar-list">
+                    
+                    <a href="#" class="sidebar-item animate-on-scroll delay-300">
+                        <img src="https://picsum.photos/200/150?random=84" alt="ट्रेंडिंग 1">
+                        <div>
+                            <h4>अंतर्राष्ट्रीय व्यापार समझौते पर भारत और कनाडा सहमत।</h4>
+                            <div class="meta">दुनिया | 2 घंटे पहले</div>
+                        </div>
+                    </a>
+
+                    <a href="#" class="sidebar-item animate-on-scroll delay-400">
+                        <img src="https://picsum.photos/200/150?random=85" alt="ट्रेंडिंग 2">
+                        <div>
+                            <h4>स्थानीय निकायों के चुनाव में महिलाओं का जबरदस्त प्रदर्शन।</h4>
+                            <div class="meta">राजनीति | 4 घंटे पहले</div>
+                        </div>
+                    </a>
+
+                    <a href="#" class="sidebar-item animate-on-scroll delay-500">
+                        <img src="https://picsum.photos/200/150?random=86" alt="ट्रेंडिंग 3">
+                        <div>
+                            <h4>वैज्ञानिकों ने दुर्लभ समुद्री जीव की खोज की।</h4>
+                            <div class="meta">विज्ञान | कल</div>
+                        </div>
+                    </a>
+
+                    <a href="#" class="sidebar-item animate-on-scroll delay-600">
+                        <img src="https://picsum.photos/200/150?random=87" alt="ट्रेंडिंग 4">
+                        <div>
+                            <h4>आईपीएल नीलामी: युवा खिलाड़ी को मिली रिकॉर्ड कीमत।</h4>
+                            <div class="meta">खेल | 6 घंटे पहले</div>
+                        </div>
+                    </a>
+
+                    <a href="#" class="sidebar-item animate-on-scroll delay-700">
+                        <img src="https://picsum.photos/200/150?random=88" alt="ट्रेंडिंग 5">
+                        <div>
+                            <h4>संपादकीय: डेटा प्राइवेसी के लिए नए कानून की आवश्यकता।</h4>
+                            <div class="meta">राय | 8 घंटे पहले</div>
+                        </div>
+                    </a>
+
+                </div>
+            </aside>
+            
         </div>
-    </section>
 
-    <section class="section">
-      <h2>Opinion & Editorials</h2>
-      <div class="grid-wrapper">
-        <div class="grid">
-          <a href="#" class="news-card animate-on-scroll" style="transition-delay: 0ms;">
-            <div class="thumb"><img src="https://picsum.photos/800/600?random=21" alt=""></div>
-            <h4>Markets open lower amid global pressure</h4>
-            <p class="muted">Stocks opened lower as investors reacted to overnight developments and weak data from major economies.</p>
-          </a>
+        <section>
+            <div class="section-header">
+                <h2>🎥 वीडियो गैलरी</h2>
+                <a href="#">सभी वीडियो देखें <i class="fas fa-arrow-right"></i></a>
+            </div>
+            
+            <div class="video-grid">
+                
+                <a href="#" class="vid-card animate-on-scroll delay-100">
+                    <img src="https://picsum.photos/600/400?random=91" alt="वीडियो 1">
+                    <div class="play-btn"><i class="fas fa-play"></i></div>
+                    <div class="vid-card-content">
+                        <h4>10 मिनट में समझें - कृषि बिल पर विवाद क्यों है?</h4>
+                        <p class="meta">लाइव डिबेट | 3 दिन पहले</p>
+                    </div>
+                </a>
 
-          <a href="#" class="news-card animate-on-scroll" style="transition-delay: 100ms;">
-            <div class="thumb"><img src="https://picsum.photos/800/600?random=22" alt=""></div>
-            <h4>Technology: New breakthrough in AI</h4>
-            <p class="muted">Startups and large firms race to adopt the latest AI models. Experts say impacts will be profound.</p>
-          </a>
+                <a href="#" class="vid-card animate-on-scroll delay-200">
+                    <img src="https://picsum.photos/600/400?random=92" alt="वीडियो 2">
+                    <div class="play-btn"><i class="fas fa-play"></i></div>
+                    <div class="vid-card-content">
+                        <h4>बजट 2026: आम आदमी पर क्या होगा असर?</h4>
+                        <p class="meta">स्पेशल रिपोर्ट | 1 सप्ताह पहले</p>
+                    </div>
+                </a>
 
-          <a href="#" class="news-card animate-on-scroll" style="transition-delay: 200ms;">
-            <div class="thumb"><img src="https://picsum.photos/800/600?random=23" alt=""></div>
-            <h4>Health: Vaccination drive expands to rural areas</h4>
-            <p class="muted">Authorities announce expanded outreach to reach remote populations with mobile clinics.</p>
-          </a>
+                <a href="#" class="vid-card animate-on-scroll delay-300">
+                    <img src="https://picsum.photos/600/400?random=93" alt="वीडियो 3">
+                    <div class="play-btn"><i class="fas fa-play"></i></div>
+                    <div class="vid-card-content">
+                        <h4>विश्व पर्यटन स्थलों की सुंदरता: एक डॉक्यूमेंट्री।</h4>
+                        <p class="meta">मनोरंजन | 2 दिन पहले</p>
+                    </div>
+                </a>
 
-          <a href="#" class="news-card animate-on-scroll" style="transition-delay: 300ms;">
-            <div class="thumb"><img src="https://picsum.photos/800/600?random=24" alt=""></div>
-            <h4>Entertainment: Film festival winners announced</h4>
-            <p class="muted">A celebration of independent cinema concluded with surprise winners.</p>
-          </a>
+                <a href="#" class="vid-card animate-on-scroll delay-400">
+                    <img src="https://picsum.photos/600/400?random=94" alt="वीडियो 4">
+                    <div class="play-btn"><i class="fas fa-play"></i></div>
+                    <div class="vid-card-content">
+                        <h4>मौसम अपडेट: इस सप्ताह कैसा रहेगा आपके शहर का हाल?</h4>
+                        <p class="meta">रिपोर्ट | 12 घंटे पहले</p>
+                    </div>
+                </a>
+                
+            </div>
+        </section>
 
-          <a href="#" class="news-card animate-on-scroll" style="transition-delay: 400ms;">
-            <div class="thumb"><img src="https://picsum.photos/800/600?random=25" alt=""></div>
-            <h4>Science: Ocean research reveals new species</h4>
-            <p class="muted">Explorers document several previously unknown organisms in deep-sea habitats.</p>
-          </a>
-
-          <a href="#" class="news-card animate-on-scroll" style="transition-delay: 500ms;">
-            <div class="thumb"><img src="https://picsum.photos/800/600?random=26" alt=""></div>
-            <h4>Opinion: Why local governance matters</h4>
-            <p class="muted">An editorial arguing for decentralised decision-making and community participation.</p>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Top Videos</h2>
-      <div class="videos">
-        <a href="#" class="vid animate-on-scroll" style="transition-delay: 0ms;" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ">
-          <img src="https://picsum.photos/600/400?random=31" alt="">
-          <div class="play" aria-hidden="true"></div>
-        </a>
-        <a href="#" class="vid animate-on-scroll" style="transition-delay: 100ms;" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ">
-          <img src="https://picsum.photos/600/400?random=32" alt="">
-          <div class="play" aria-hidden="true"></div>
-        </a>
-        <a href="#" class="vid animate-on-scroll" style="transition-delay: 200ms;" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ">
-          <img src="https://picsum.photos/600/400?random=33" alt="">
-          <div class="play" aria-hidden="true"></div>
-        </a>
-      </div>
-    </section>
+    </main>
 
     <footer>
-      <div class="footer-grid">
-        <div>
-          <h3 class="animate-on-scroll">About Saurabh News</h3>
-          <p class="small muted animate-on-scroll delay-100">Saurabh News is a demo news site built to showcase a clean, modern UI/UX with slow-motion animations and responsive design.</p>
-          
-          <div class="social-links animate-on-scroll delay-200">
-            <a href="#" target="_blank" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
-            <a href="#" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
-            <a href="#" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-            <a href="#" target="_blank" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
-            <a href="#" target="_blank" aria-label="Telegram"><i class="fa-brands fa-telegram"></i></a>
-          </div>
+        <div class="container">
+            <div class="footer-grid">
+                
+                <div class="footer-col">
+                    <h3>AIN NEWS</h3>
+                    <p style="font-size:14px; color:var(--muted)">हमारा उद्देश्य निष्पक्ष, त्वरित और सटीक समाचार आप तक पहुँचाना है।</p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/share/1C54S9mC19/" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook-square"></i></a>
+                        <a href="#" target="_blank" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="https://www.instagram.com/ain_news_?igsh=MWp4ZHhlOGxnY25hYg==" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://youtube.com/@ain_newss?si=gzTOTltFrnY8RbCj" target="_blank" aria-label="Youtube"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
 
+                <div class="footer-col">
+                    <h3>मुख्य लिंक</h3>
+                    <ul>
+                        <li><a href="#">हमारे बारे में</a></li>
+                        <li><a href="#">करियर</a></li>
+                        <li><a href="#">विज्ञापन दें</a></li>
+                        <li><a href="#">गोपनीयता नीति</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h3>समाचार श्रेणियाँ</h3>
+                    <ul>
+                        <li><a href="#">देश और राज्य</a></li>
+                        <li><a href="#">दुनिया</a></li>
+                        <li><a href="#">खेल और मनोरंजन</a></li>
+                        <li><a href="#">बिजनेस और टेक्नोलॉजी</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h3>संपर्क करें</h3>
+                    <div class="contact-info">
+                        <a href="mailto:souravchaudhary8393@gmail.com">
+                            <i class="fas fa-envelope"></i>
+                            souravchaudhary8393@gmail.com
+                        </a>
+                        <a href="tel:+918393829512">
+                            <i class="fas fa-phone"></i>
+                            +91 8393829512 (समाचार)
+                        </a>
+                        <a href="tel:+918899439997">
+                            <i class="fas fa-phone"></i>
+                            +91 8899439997 (ग्राहक सेवा)
+                        </a>
+                        </div>
+                </div>
+                </div>
+
+            <div class="copyright">
+                &copy; 2025 AIN NEWS | सभी अधिकार सुरक्षित।
+            </div>
         </div>
-        <div>
-          <h3 class="animate-on-scroll delay-300">Sections</h3>
-          <p class="small animate-on-scroll delay-400"><a href="#">Top Stories</a> • <a href="#">India</a> • <a href="#">World</a> • <a href="#">Business</a> • <a href="#">Politics</a> • <a href="#">Opinion</a></p>
-        </div>
-        <div>
-          <h3 class="animate-on-scroll delay-500">Contact</h3>
-          <p class="small muted animate-on-scroll delay-600">press@saurabhnews.example • +91</p>
-        </div>
-      </div>
     </footer>
+    
+    <nav id="bottom-nav">
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a href="#" class="active">
+                    <i class="fas fa-home"></i>
+                    देश
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#">
+                    <i class="fas fa-globe"></i>
+                    दुनिया
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#">
+                    <i class="fas fa-video"></i>
+                    वीडियो
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#">
+                    <i class="fas fa-chart-line"></i>
+                    व्यापार
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" id="more-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                    अन्य
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <a href="https://wa.me/918393829512?text=Hello%20AIN%20News%20I%20have%20a%20query." target="_blank" id="whatsapp-button" aria-label="Chat on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. *** Search Bar Toggle Logic (SIDE OPEN) ***
+            const searchToggle = document.getElementById('search-toggle');
+            const searchInputWrapper = document.getElementById('search-input-wrapper');
+            const searchInputField = document.getElementById('search-input-field');
+            
+            searchToggle.addEventListener('click', (e) => {
+                e.stopPropagation(); 
+                searchInputWrapper.classList.toggle('open');
+                
+                if (searchInputWrapper.classList.contains('open')) {
+                    searchInputField.focus();
+                } else {
+                    searchInputField.blur();
+                }
+            });
 
-  </main>
+            // Close search bar if clicked outside (Only if it's open)
+            document.addEventListener('click', (e) => {
+                if (searchInputWrapper.classList.contains('open') && 
+                    !searchInputWrapper.contains(e.target) && 
+                    !searchToggle.contains(e.target)) 
+                {
+                    searchInputWrapper.classList.remove('open');
+                }
+            });
 
-  <div id="videoModal" style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.8);z-index:3000;opacity:0;pointer-events:none;transition:opacity 240ms">
-    <div style="width:90%;max-width:900px;background:transparent;position:relative;padding:18px">
-      <iframe id="videoFrame" width="100%" height="520" src="" frameborder="0" allowfullscreen style="border-radius:10px"></iframe>
-      <button id="closeVideo" class="btn btn-login" style="position:absolute;right:6px;top:6px;">✕</button>
-    </div>
-  </div>
-  
-  <a href="https://wa.me/918393829512?text=Hello%20Saurabh%20News" target="_blank" class="whatsapp-btn" aria-label="Chat on WhatsApp Business">
-      <i class="fa-brands fa-whatsapp"></i>
-  </a>
+            // 2. *** Mobile Menu Toggle Logic (Re-purposed for 'अन्य/More') ***
+            const moreToggle = document.getElementById('more-menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu-overlay');
+            const closeMenu = document.getElementById('close-menu');
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // loader
-      const loaderWrap = document.getElementById('loader-wrap');
-      // Set opacity to 0 after 700ms and hide it
-      setTimeout(() => { loaderWrap.style.opacity = '0'; loaderWrap.style.visibility = 'hidden' }, 700);
+            if(moreToggle){
+                moreToggle.addEventListener('click', (e) => {
+                    e.preventDefault(); // Prevent default link behavior
+                    mobileMenu.classList.add('open');
+                    document.body.style.overflow = 'hidden'; 
+                });
+            }
 
-      // mobile menu
-      const hambBtn = document.getElementById('hambBtn');
-      const mobileMenu = document.getElementById('mobileMenu');
-      const closeMobile = document.getElementById('closeMobile');
-      
-      // FIX: Ensure mobile menu toggle works reliably
-      hambBtn.addEventListener('click', (e) => { 
-        e.preventDefault(); 
-        mobileMenu.classList.add('open'); 
-        mobileMenu.setAttribute('aria-hidden', 'false');
-        // Optional: Lock body scrolling when menu is open
-        document.body.style.overflow = 'hidden'; 
-      });
-      
-      closeMobile.addEventListener('click', (e) => { 
-        e.preventDefault(); 
-        mobileMenu.classList.remove('open'); 
-        mobileMenu.setAttribute('aria-hidden', 'true');
-        document.body.style.overflow = ''; // Unlock body scrolling
-      });
 
-      // mega menu for touch devices: open on tap
-      const mega = document.querySelector('.mega');
-      if (mega) {
-        mega.addEventListener('click', (e) => {
-          const panel = mega.querySelector('.mega-panel');
-          // Only toggle on tap/click if it's a touch device or small screen
-          if (window.innerWidth <= 820 || !window.matchMedia('(hover: hover)').matches) {
-             e.preventDefault(); // Prevent navigating away on touch/mobile
-             panel.classList.toggle('show');
-          }
-        })
-      }
+            if(closeMenu){
+                closeMenu.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    mobileMenu.classList.remove('open');
+                    document.body.style.overflow = ''; 
+                });
+            }
 
-      // video modal (made clickable)
-      const vids = document.querySelectorAll('.vid');
-      const modal = document.getElementById('videoModal');
-      const frame = document.getElementById('videoFrame');
-      const closeVideo = document.getElementById('closeVideo');
-      vids.forEach(v => { v.addEventListener('click', (e) => { e.preventDefault(); const url = v.getAttribute('data-video'); frame.src = url + '?autoplay=1&rel=0'; modal.style.opacity = '1'; modal.style.pointerEvents = 'auto' }) });
-      closeVideo.addEventListener('click', () => { frame.src = ''; modal.style.opacity = '0'; modal.style.pointerEvents = 'none' });
-      modal.addEventListener('click', (e) => { if (e.target === modal) { frame.src = ''; modal.style.opacity = '0'; modal.style.pointerEvents = 'none' } })
+            // Close menu on link click
+            if(mobileMenu){
+                mobileMenu.querySelectorAll('a').forEach(link => {
+                    if (link.id !== 'close-menu') {
+                        link.addEventListener('click', () => {
+                            mobileMenu.classList.remove('open');
+                            document.body.style.overflow = '';
+                        });
+                    }
+                });
+            }
+            
 
-      // pause marquee on hover
-      const marquee = document.querySelector('.inner');
-      marquee.addEventListener('mouseenter', () => { marquee.style.animationPlayState = 'paused' });
-      marquee.addEventListener('mouseleave', () => { marquee.style.animationPlayState = 'running' });
-      
-      // *** Auto-Sliding Hero Carousel ***
-      const slider = document.getElementById('heroSlider');
-      let currentSlide = 0;
-      const totalSlides = 3; 
+            // 3. *** Up/Down Scroll Animation Logic ***
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animated');
+                    } else {
+                        // Optional: remove animation class when not visible
+                        entry.target.classList.remove('animated');
+                    }
+                });
+            }, { 
+                threshold: 0.1, 
+                rootMargin: "0px 0px -100px 0px" 
+            });
 
-      function nextSlide() {
-          currentSlide = (currentSlide + 1) % totalSlides;
-          const offset = -currentSlide * (100 / totalSlides);
-          slider.style.transform = `translateX(${offset}%)`;
-      }
-      // Start sliding every 5 seconds
-      setInterval(nextSlide, 5000); 
+            document.querySelectorAll('.animate-on-scroll').forEach((el) => {
+                observer.observe(el);
+            });
 
-      // *** Intersection Observer for Animation Loop FIX (Re-Triggers on every scroll) ***
-      const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-              const target = entry.target;
-              if (entry.isIntersecting) {
-                  // Element is entering the viewport -> Animate it (Slow-motion)
-                  target.classList.add('animated');
-              } else {
-                  // Element is leaving the viewport -> Remove animated class to re-trigger on next scroll
-                  target.classList.remove('animated');
-              }
-          });
-      }, { 
-          // Threshold set low to animate as soon as it appears
-          threshold: 0.05, 
-          // Default root margin ensures animation resets when out of bounds.
-          rootMargin: "0px 0px 0px 0px" 
-      });
+            const heroWrapper = document.getElementById('heroSliderWrapper');
+            if (heroWrapper) {
+                heroWrapper.classList.add('animated');
+            }
 
-      // Apply observer to all animatable elements
-      document.querySelectorAll('.animate-on-scroll').forEach((el) => {
-          // Exclude the hero wrapper from the automatic scroll animation if it contains the auto slider
-          if (!el.classList.contains('feature-wrapper')) {
-             observer.observe(el);
-          }
-      });
-      
-      // For elements visible on load (like the hero section/slider wrapper) we trigger the animation immediately
-      document.querySelectorAll('.feature-wrapper.animate-on-scroll, .live-player-wrap.animate-on-scroll, .live-feed-list.animate-on-scroll').forEach(el => {
-          if (el.classList.contains('animate-on-scroll')) {
-              el.classList.add('animated');
-          }
-      });
-    });
-  </script>
+            // 4. *** Auto-Sliding Hero Carousel Logic ***
+            const slider = document.getElementById('heroSlider');
+            if(slider){
+                let currentSlide = 0;
+                const totalSlides = 3; 
+
+                function nextSlide() {
+                    currentSlide = (currentSlide + 1) % totalSlides;
+                    const offset = -currentSlide * (100 / totalSlides);
+                    slider.style.transform = `translateX(${offset}%)`;
+                }
+
+                setInterval(nextSlide, 5000); 
+            }
+
+
+        });
+    </script>
+
 </body>
 </html>
