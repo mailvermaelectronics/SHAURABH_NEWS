@@ -1,0 +1,1064 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" /> 
+  <title>Saurabh News — Demo</title>
+  <meta name="description" content="Professional news website UI/UX demo with slow-motion animations, mobile menu, mega-menu, video section and loading animation." />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+  <style>
+    /* ----------------------------
+       Reset + Base
+       ---------------------------- */
+    :root{
+      --bg:#0b0b0b; /* deep black */
+      --panel:#0f0f0f;
+      --muted:#bfc3c6; /* grey for text */
+      --accent:#ffffff; /* white */
+      --highlight:#e6e6e6;
+      --brand:#111111;
+      --card:#121212;
+      --glass: rgba(255,255,255,0.04);
+      --shadow: 0 8px 24px rgba(0,0,0,0.6);
+      --radius:12px;
+      --max-w:1200px;
+      /* Slow transition speed (900ms) for slow-motion effect */
+      --transition: 900ms cubic-bezier(.25, .46, .45, .94); 
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:linear-gradient(180deg,#050505 0%, #0b0b0b 100%);
+      color:var(--accent);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+      font-size:16px;
+      /* FIX: Prevent horizontal scrollbar on the body for all views */
+      overflow-x: hidden; 
+    }
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+    
+    /* DESKTOP/LARGE SCREEN CONTAINER: Centered with max width and padding applied correctly. */
+    .container{
+      max-width:var(--max-w);
+      margin:0 auto;
+      /* FIX: DEFAULT DESKTOP PADDING: 20px on left/right. */
+      padding: 0 20px; 
+    }
+    
+    /* Enhanced Animation base styles */
+    .animate-on-scroll{
+        opacity:0;
+        transform:translateY(80px) scale(0.9); 
+        transition:var(--transition);
+        transition-property:opacity,transform,box-shadow;
+    }
+    .animate-on-scroll.animated{
+        opacity:1;
+        transform:translateY(0) scale(1);
+    }
+    /* Slower staggered delays */
+    .delay-100{transition-delay:100ms} 
+    .delay-200{transition-delay:200ms} 
+    .delay-300{transition-delay:300ms} 
+
+    /* ----------------------------
+       Loading Screen
+       ---------------------------- */
+    #loader-wrap{
+        position:fixed;
+        inset:0;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        background:linear-gradient(180deg, #000 0%, #070707 100%);
+        z-index:9999;
+        transition:opacity 400ms ease,visibility 400ms;
+    }
+    #loader{
+        width:180px; 
+        height:180px;
+        border-radius:20px;
+        background:linear-gradient(135deg,#111,#222);
+        box-shadow:var(--shadow);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        flex-direction:column;
+        text-align: center; 
+        perspective: 1000px;
+    }
+    .loader-name{
+        font-weight:900;
+        font-size:22px;
+        letter-spacing:1.5px;
+        white-space: nowrap; 
+        background: linear-gradient(90deg, #3498db, #2ecc71); 
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: #fff; 
+        margin-bottom: 10px; 
+    }
+    .loader-ring{
+        width:74px; 
+        height:74px;
+        border-radius:50%;
+        border:8px solid transparent; 
+        border-top-color: #3498db;
+        border-left-color: #2ecc71;
+        
+        animation:spin 1.5s linear infinite, glow-shadow 1.5s ease-in-out infinite;
+        margin-top:0; 
+        box-shadow: 0 0 10px rgba(52, 152, 219, 0.6), inset 0 0 10px rgba(46, 204, 113, 0.6);
+        transform-style: preserve-3d;
+    }
+    @keyframes spin{
+        0%{transform:rotateY(0deg) rotateX(0deg)}
+        50%{transform:rotateY(180deg) rotateX(180deg)}
+        100%{transform:rotateY(360deg) rotateX(360deg)}
+    }
+    @keyframes glow-shadow {
+        0%, 100% {box-shadow: 0 0 15px rgba(52, 152, 219, 0.9), inset 0 0 10px rgba(46, 204, 113, 0.9);}
+        50% {box-shadow: 0 0 5px rgba(52, 152, 219, 0.4), inset 0 0 5px rgba(46, 204, 113, 0.4);}
+    }
+
+    /* ----------------------------
+       Header / Nav 
+       ---------------------------- */
+    header{position:sticky;top:0;z-index:1000;background:linear-gradient(180deg, rgba(11,11,11,0.9), rgba(11,11,11,0.85));backdrop-filter:blur(6px);border-bottom:1px solid rgba(255,255,255,0.03)}
+    
+    .topbar{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:16px;
+        /* Padding handled by .container */
+        padding:10px 0; 
+        align-items: center; 
+    }
+    
+    .brand{display:flex;align-items:center;gap:12px; flex-shrink: 0;}
+    .brand .logo{display:flex;flex-direction:column}
+    
+    /* Enhanced Channel Name Styling */
+    .logo .title{
+        font-weight:900;
+        font-size:24px;
+        letter-spacing:1.5px;
+        color: #e67e22; 
+        transition: color 0.5s ease;
+        animation: heading-glow-text 4s infinite alternate;
+    }
+    .logo .tag{font-size:12px;color:#f39c12;font-weight:600;margin-top:2px}
+    
+    @keyframes heading-glow-text {
+        0% { color: #e67e22; text-shadow: 0 0 8px rgba(230, 126, 34, 0.7), 0 0 12px rgba(230, 126, 34, 0.5); }
+        25% { color: #3498db; text-shadow: 0 0 8px rgba(52, 152, 219, 0.8), 0 0 12px rgba(52, 152, 219, 0.6); }
+        50% { color: #9b59b6; text-shadow: 0 0 10px rgba(155, 89, 182, 0.9), 0 0 15px rgba(155, 89, 182, 0.7); }
+        75% { color: #2ecc71; text-shadow: 0 0 10px rgba(46, 204, 113, 0.8), 0 0 15px rgba(46, 204, 113, 0.6); }
+        100% { color: #f39c12; text-shadow: 0 0 8px rgba(243, 156, 18, 0.7), 0 0 12px rgba(243, 156, 18, 0.5); }
+    }
+
+    /* nav and other styles... */
+    nav{display:flex;align-items:center;justify-content:flex-end;width:100%}
+    .nav-left{display:flex;align-items:center;gap:18px}
+    
+    /* FIX: Ensure categories are positioned relative for absolute mega menu positioning */
+    .categories{display:flex;gap:10px}
+    .cat{padding:8px 12px;border-radius:8px;background:transparent;color:var(--muted);font-weight:600;transition:all 250ms ease; position: relative;}
+    .cat:hover{background:var(--glass);color:var(--highlight);transform:translateY(-2px) scale(1.02)}
+    
+    /* FIX: Mega Menu Styling to open *OVER* the content */
+    .mega-panel{
+        position: absolute;
+        top: 100%; /* Position below the 'Top Stories' link */
+        left: 0;
+        z-index: 100;
+        width: 600px; /* Adjust width as needed */
+        background: var(--panel);
+        border: 1px solid rgba(255,255,255,0.05);
+        box-shadow: var(--shadow);
+        padding: 15px;
+        border-radius: 0 0 var(--radius) var(--radius);
+        display: none;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity 300ms, transform 300ms;
+    }
+    .mega:hover .mega-panel, .mega-panel.show{
+        display: flex;
+        opacity: 1;
+        transform: translateY(0);
+        gap: 20px;
+    }
+    .mega-card{
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .mega-card h4{
+        margin: 0 0 10px 0;
+        padding-bottom: 5px;
+        border-bottom: 2px solid #e74c3c;
+        font-size: 14px;
+        color: var(--highlight);
+    }
+    .mega-item{
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: background 200ms;
+        padding: 5px;
+        border-radius: 6px;
+    }
+    .mega-item:hover{
+        background: rgba(255,255,255,0.05);
+    }
+    .mega-item img{
+        width: 50px;
+        height: 40px;
+        object-fit: cover;
+        border-radius: 4px;
+    }
+    .mega-item .meta{
+        font-size: 13px;
+        line-height: 1.3;
+    }
+    .mega-item .muted{
+        font-size: 11px;
+        color: var(--muted);
+    }
+
+
+    /* All link-buttons are defined as clickable for better UX */
+    .cat, .btn-login, .btn-subscribe, .hamburger {cursor:pointer;} 
+    
+    /* search + actions */
+    .nav-right{
+        display:flex;
+        align-items:center;
+        gap:12px;
+        align-self: center; 
+    }
+    .search{position:relative}
+    .search input{
+        background:transparent;
+        border:1px solid rgba(255,255,255,0.06);
+        padding:8px 12px;
+        border-radius:8px;
+        color:var(--accent);
+        width:180px;
+        outline:none;
+        transition:all 280ms;
+        /* FIX: Explicitly setting height for alignment with 38px buttons */
+        height: 38px; 
+    }
+    .search input:focus{width:260px;background:rgba(255,255,255,0.02)}
+    
+    /* General Button Styling (Base) - Height fixed for alignment */
+    .btn, .hamburger{
+        height: 38px; 
+        display: flex; 
+        align-items: center;
+        justify-content: center;
+        padding:0 12px; 
+        border-radius:8px;
+        border:none;
+        cursor:pointer;
+        transition:background 200ms, transform 150ms;
+        font-weight: 700;
+        color: #fff;
+        text-align: center;
+        text-decoration: none;
+        line-height: 1; 
+        white-space: nowrap; 
+    }
+
+    /* Login Button - Blue */
+    .btn-login{
+        background: linear-gradient(90deg, #3498db, #2980b9); 
+        box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+    }
+    .btn-login:hover{
+        background: linear-gradient(90deg, #2980b9, #3498db);
+        transform:translateY(-1px) scale(1.01);
+        box-shadow: 0 6px 16px rgba(52, 152, 219, 0.6);
+    }
+    
+    /* Subscribe Button - Red/Orange */
+    .btn-subscribe{
+        background: linear-gradient(90deg, #e74c3c, #f39c12); 
+        box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+    }
+    .btn-subscribe:hover{
+        background: linear-gradient(90deg, #f39c12, #e74c3c);
+        transform:translateY(-1px) scale(1.01);
+        box-shadow: 0 6px 16px rgba(231, 76, 60, 0.6);
+    }
+    
+    /* Hamburger Button - Default Look, Height Fixed */
+    .hamburger{
+        background: #1a1a1a;
+        color: var(--highlight);
+        border: 1px solid rgba(255,255,255,0.1);
+        padding: 0 12px; 
+        font-size: 16px; 
+        font-weight: normal;
+        box-shadow: none; 
+    }
+    .hamburger:hover{
+        background: #292929;
+        transform: scale(0.98);
+        box-shadow: none;
+    }
+
+
+    /* ----------------------------
+       Breaking Ticker
+       ---------------------------- */
+    .ticker{display:flex;align-items:center;background:#0b0b0b;border-top:1px solid rgba(255,255,255,0.02);
+      /* Padding handled by .container */
+      padding:8px 0; 
+    }
+    .ticker .label{background:#e74c3c;color:#fff;padding:6px 10px;border-radius:6px;margin-right:12px;font-weight:700;font-size:13px}
+    .ticker .label.live{background:#2ecc71;}
+    .ticker .scroll{overflow:hidden;flex:1}
+    .scroll .inner{display:inline-block;white-space:nowrap;animation:marquee 16s linear infinite}
+    @keyframes marquee{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
+    .scroll a{margin-right:48px;color:var(--muted);font-weight:600}
+    .scroll a:hover{color:var(--highlight)}
+
+    /* ----------------------------
+       Hero / Featured 
+       ---------------------------- */
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:18px;
+      /* Padding handled by .container on desktop */
+      padding:22px 0;
+    }
+    
+    .feature-wrapper {
+        position: relative;
+        overflow: hidden;
+        border-radius: 14px;
+        box-shadow: var(--shadow);
+    }
+    .feature-slider {
+        display: flex;
+        width: 300%; 
+        transition: transform 0.8s ease-in-out;
+    }
+    .hero .feature{
+        flex-shrink: 0;
+        width: calc(100% / 3); 
+        background:linear-gradient(180deg,#0d0d0d,#0b0b0b);
+        padding:18px;
+        position:relative;
+        overflow:hidden;
+        transition:none; 
+    }
+
+    .feature img{height:360px;width:100%;object-fit:cover;border-radius:10px;transition:transform 600ms ease-out;}
+    .feature:hover img{transform:scale(1.03);}
+    .feature .kicker{position:absolute;left:18px;top:18px;background:rgba(0,0,0,0.6);padding:8px 10px;border-radius:8px;font-weight:700}
+    .feature h1{font-size:26px;margin:12px 0;transition:color 200ms}
+    .feature:hover h1{color:var(--highlight);}
+    .feature p{color:var(--muted);margin-bottom:8px}
+
+    .side-cards{display:grid;gap:12px}
+    .card{background:var(--card);padding:12px;border-radius:10px;display:flex;gap:10px;align-items:center;transition:var(--transition);transition-property:transform,box-shadow;}
+    .card:hover{transform:translateY(-8px) scale(1.01);box-shadow:0 16px 48px rgba(0,0,0,0.6)}
+    .card img{width:120px;height:80px;object-fit:cover;border-radius:8px}
+    .card h3{margin:0;font-size:15px;transition:color 200ms}
+    .card:hover h3{color:var(--highlight)}
+    .card .meta{font-size:13px;color:var(--muted)}
+
+    /* ----------------------------
+       Grid / Latest news
+       ---------------------------- */
+    .section{margin-top:22px}
+    
+    /* Carousel/Slider styling */
+    .grid-wrapper{
+      overflow-x:scroll;
+      padding-bottom:12px;
+      /* FIX: This must be 0px on desktop, padding is added by .container */
+      padding-right: 0;
+    } 
+    .grid-wrapper::-webkit-scrollbar{height:8px}
+    .grid-wrapper::-webkit-scrollbar-thumb{background-color:rgba(255,255,255,0.1);border-radius:10px}
+    .grid-wrapper::-webkit-scrollbar-track{background-color:rgba(0,0,0,0.2);border-radius:10px}
+
+    .grid{display:flex;gap:14px;}
+    .news-card{
+      background:linear-gradient(180deg,#0f0f0f,#0b0b0b);
+      padding:14px;
+      border-radius:10px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      min-width:300px; /* Fixed width for slide effect */
+      max-width:300px;
+      transition:var(--transition);
+      transition-property:transform,box-shadow;
+    }
+    .news-card:hover{transform:translateY(-8px) scale(1.01);box-shadow:var(--shadow)}
+    .news-card .thumb{height:160px;border-radius:8px;overflow:hidden}
+    .news-card .thumb img{transition:transform 600ms ease-out;}
+    .news-card:hover .thumb img{transform:scale(1.05);}
+    .news-card h4{margin:0;transition:color 200ms}
+    .news-card:hover h4{color:var(--highlight)}
+    .news-card p{margin:0;color:var(--muted);font-size:14px}
+    
+    /* ----------------------------
+       LIVE Video Section
+       ---------------------------- */
+    .live-video-section{
+        display:grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 18px;
+        padding-top: 22px;
+        /* Padding handled by .container on desktop */
+    }
+    .live-player-wrap{
+        background: #000;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+    }
+    .live-feed-list{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .live-feed-item{
+        background: var(--card);
+        padding: 10px;
+        border-radius: 10px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        transition: transform 200ms;
+    }
+    .live-feed-item:hover{
+        background: #181818;
+        transform: translateX(4px);
+    }
+    .live-feed-item img{width: 80px; height: 50px; object-fit: cover; border-radius: 6px;}
+    .live-feed-item .meta{font-size: 13px;}
+    .live-tag{background: #e74c3c; color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: 700;}
+
+
+    /* ----------------------------
+       Regular Video Section
+       ---------------------------- */
+    .videos{
+      display:grid;
+      grid-template-columns:1fr 1fr 1fr;
+      gap:12px;
+      /* Padding handled by .container on desktop */
+    }
+    .vid{position:relative;border-radius:10px;overflow:hidden;cursor:pointer;transition:var(--transition);transition-property:transform,box-shadow;}
+    .vid:hover{transform:scale(1.03);box-shadow:var(--shadow)}
+    .vid img{height:180px;object-fit:cover;width:100%;transition:opacity 300ms, transform 600ms}
+    .vid:hover img{transform:scale(1.1);}
+    .play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.6);padding:14px;border-radius:999px;border:2px solid rgba(255,255,255,0.08);backdrop-filter:blur(4px);cursor:pointer;transition:transform 300ms, background 200ms}
+    .vid:hover .play{transform:translate(-50%,-50%) scale(1.15);background:rgba(255,255,255,0.1)}
+    .play:after{content:'▶';font-weight:700}
+
+    /* ----------------------------
+       Footer + Social Media
+       ---------------------------- */
+    footer{margin-top:36px;
+      /* Padding handled by .container on desktop */
+      padding:28px 0;
+      background:linear-gradient(180deg,#060606,#0b0b0b);border-top:1px solid rgba(255,255,255,0.02)}
+    .footer-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+    .small{font-size:13px;color:var(--muted)}
+    .small a:hover{color:var(--highlight);text-decoration:underline}
+
+    /* Social Media Styles (FIX: Color changed to white/highlight to ensure visibility) */
+    .social-links{margin-top:15px; display: flex; gap:14px;}
+    .social-links a{
+        font-size: 20px;
+        color: #fff; 
+        transition: color 200ms, transform 200ms;
+    }
+    .social-links a:hover{
+        color: var(--highlight);
+        transform: translateY(-2px) scale(1.1);
+    }
+    /* FIX: Force Font Awesome font family to ensure display */
+    .social-links a i {
+        font-family: "Font Awesome 6 Brands" !important; 
+        font-weight: 400 !important; 
+    }
+    .social-links .fa-youtube:hover{color: #ff0000;}
+    .social-links .fa-twitter:hover{color: #1DA1F2;}
+    .social-links .fa-instagram:hover{background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
+    .social-links .fa-facebook:hover{color: #1877F2;}
+    .social-links .fa-telegram:hover{color: #0088CC;}
+
+    /* ----------------------------
+       WhatsApp Business Button (Floating)
+       ---------------------------- */
+    @keyframes zoomin-zoomout {
+        0%, 100% { 
+            transform: scale(1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+        50% { 
+            transform: scale(1.08); 
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+        }
+    }
+
+    .whatsapp-btn {
+        position: fixed;
+        bottom: 80px; 
+        right: 25px; 
+        z-index: 1500;
+        background-color: #25D366; 
+        color: white;
+        width: 55px; 
+        height: 55px; 
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        animation: zoomin-zoomout 1.0s ease-in-out infinite; 
+        transition: none; 
+        visibility: visible;
+        opacity: 1;
+    }
+    
+    .whatsapp-btn i { 
+        color: #fff !important; 
+        transform: none !important;
+        font-family: "Font Awesome 6 Brands" !important; 
+        font-weight: 400 !important; 
+    }
+
+    .whatsapp-btn:hover {
+        transform: scale(1.15); 
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.7);
+        animation: none; 
+    }
+    
+    /* ----------------------------
+       Mobile Menu Overlay 
+       ---------------------------- */
+    .mobile-menu{
+        position: fixed; 
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        transform: translateX(100%);
+        opacity: 0;
+        visibility: hidden;
+        transition: transform 300ms ease-in-out, opacity 300ms;
+        background: rgba(11, 11, 11, 0.98);
+        backdrop-filter: blur(8px);
+        z-index: 2000;
+        padding: 20px;
+        overflow-y: auto; 
+    }
+    .mobile-menu.open{
+        transform: translateX(0);
+        opacity: 1;
+        visibility: visible;
+    }
+    .mobile-menu .logo-mark{
+      font-weight: 900;
+      font-size: 24px;
+      color: #e67e22; 
+    }
+    .mobile-list{
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .mobile-list a{
+      font-size: 18px;
+      font-weight: 600;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      transition: color 200ms;
+    }
+    .mobile-list a:hover{
+      color: var(--highlight);
+    }
+
+    /* ----------------------------
+       Responsive/Mobile Adjustments (FULLY OPTIMIZED)
+       ---------------------------- */
+    @media (max-width:820px){
+      
+      /* 1. CONTAINER FIX: Remove horizontal padding from the container on mobile to allow full-width content */
+      .container{
+        padding: 0; 
+        max-width: 100%; 
+      }
+      
+      /* 2. APPLY PADDING TO CHILD ELEMENTS (10px) for inner spacing */
+      .topbar{
+        padding:10px 10px; 
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center; 
+      }
+      .ticker{
+        padding: 8px 10px;
+      }
+      /* Apply padding directly to the sections/grids that need inner spacing on mobile */
+      .hero{
+        grid-template-columns:1fr; 
+        padding: 22px 10px; 
+      }
+      .live-video-section{
+        grid-template-columns: 1fr; 
+        padding: 22px 10px 0 10px; 
+      }
+      .videos{
+        grid-template-columns:1fr; 
+        padding: 0 10px 22px 10px;
+      }
+      .section{
+          /* FIX: Ensure vertical spacing is correct and padding is applied */
+          padding: 0 10px; 
+          margin-top: 22px;
+      }
+      
+      /* FIX: Scrollable Grid Wrapper for "Opinion & Editorials" - This was causing the right gap */
+      .grid-wrapper {
+        overflow-x:scroll;
+        /* Only padding-left (10px) is needed for the first card. */
+        padding-left: 10px;
+        padding-bottom: 12px;
+        /* FIX: padding-right must be 0 for mobile full-fill */
+        padding-right: 0; 
+      }
+      /* Ensure the news cards themselves do not have external margins */
+      .grid{
+          padding: 0;
+      }
+
+      /* Footer padding adjustment for mobile */
+      footer {
+          padding: 28px 10px;
+      }
+      
+      /* Hide elements not needed on mobile */
+      .search input{display:none}
+      .categories{display:none;}
+      nav{justify-content: flex-end;}
+      .nav-left{gap:0;}
+      .hamburger{display:inline-flex; order: 1;}
+      .footer-grid{grid-template-columns: 1fr;}
+
+      /* Button sizing - kept small for mobile */
+      .nav-right {
+        gap: 5px; 
+        align-self: center; 
+      }
+      .btn {
+          height: 38px; 
+          padding: 0 10px; 
+          font-size: 13px; 
+      }
+      
+      /* WhatsApp button position on mobile */
+      .whatsapp-btn {
+        bottom: 45px; 
+        right: 10px; 
+        width: 45px; 
+        height: 45px;
+        font-size: 22px;
+      }
+    }
+    
+    /* Larger tablets/smaller desktops */
+    @media (min-width: 821px) and (max-width:1100px){
+      /* Adjust container padding for intermediate screens */
+      .container {
+          padding: 0 15px; 
+      }
+      .hero{grid-template-columns:1fr 320px; padding: 22px 0}
+      .live-video-section{grid-template-columns: 1fr;}
+      .videos{grid-template-columns:repeat(2,1fr)}
+    }
+
+    /* FIX: Desktop Mega Menu Position Correction */
+    @media (min-width: 821px) {
+        /* FIX: Topbar padding must align content with container padding */
+        .topbar {
+            padding: 10px 0;
+        }
+        /* FIX: Ensure search/buttons are vertically aligned with the navigation links */
+        .nav-right {
+            align-items: center; 
+        }
+        /* FIX: Ensure the mega menu panel stays within the container and doesn't affect main content flow */
+        .mega {
+             /* Needs position: relative to contain the mega-panel */
+             position: relative; 
+        }
+        /* Override mobile display setting for mega menu to use desktop hover effect */
+        .mega-panel.show {
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+    }
+  </style>
+</head>
+<body>
+  <div id="loader-wrap">
+    <div id="loader">
+      <div class="loader-name">SAURABH NEWS</div>
+      <div class="loader-ring" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <header>
+    <div class="topbar container">
+      <div class="brand">
+        <div class="logo">
+          <div class="title">SAURABH NEWS</div>
+          <div class="tag">Breaking • National • World</div>
+        </div>
+      </div>
+      <nav>
+        <div class="nav-left">
+          <div class="categories">
+            <a href="#" class="cat mega">Top Stories
+              <div class="mega-panel" id="megaPanel">
+                <div class="mega-card">
+                  <h4>Latest</h4>
+                  <a href="#" class="mega-item"><img src="https://picsum.photos/200/120?random=1" alt=""><div class="meta"><strong>Headline one</strong><div class="muted">2h ago</div></div></a>
+                  <a href="#" class="mega-item"><img src="https://picsum.photos/200/120?random=2" alt=""><div class="meta"><strong>Headline two</strong><div class="muted">4h ago</div></div></a>
+                </div>
+                <div class="mega-card">
+                  <h4>Opinion</h4>
+                  <a href="#" class="mega-item"><img src="https://picsum.photos/200/120?random=3" alt=""><div class="meta"><strong>Column: Economy</strong><div class="muted">By Ankit</div></div></a>
+                </div>
+                <div class="mega-card">
+                  <h4>Most Read</h4>
+                  <a href="#" class="mega-item"><img src="https://picsum.photos/200/120?random=4" alt=""><div class="meta"><strong>Most read headline</strong><div class="muted">12k views</div></div></a>
+                </div>
+              </div>
+            </a>
+            <a href="#" class="cat">India</a>
+            <a href="#" class="cat">World</a>
+            <a href="#" class="cat">Politics</a>
+            <a href="#" class="cat">Business</a>
+          </div>
+          <a href="#" class="hamburger" id="hambBtn">☰</a>
+        </div>
+
+        <div class="nav-right">
+          <div class="search"><input type="search" placeholder="Search news, topics..."></div>
+          <a href="#" class="btn btn-login">Login</a>
+          <a href="#" class="btn btn-subscribe">Subscribe</a>
+        </div>
+      </nav>
+    </div>
+
+    <div class="ticker container">
+      <div class="label live">LIVE</div>
+      <div class="scroll"><div class="inner"><a href="#">Major earthquake strikes coastal city — rescue operations underway.</a><a href="#">Stock markets slide on global recession fears.</a><a href="#">Election results: close finish in three states.</a></div></div>
+    </div>
+
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px"><div class="logo-mark">SAURABH NEWS</div><a href="#" id="closeMobile" class="btn btn-login">✕</a></div>
+    <nav class="mobile-list">
+      <a href="#">Top Stories</a>
+      <a href="#">India</a>
+      <a href="#">World</a>
+      <a href="#">Politics</a>
+      <a href="#">Business</a>
+      <a href="#">Sports</a>
+      <a href="#">Entertainment</a>
+    </nav>
+  </div>
+
+  <main class="container">
+    <section class="hero">
+      <div class="feature-wrapper animate-on-scroll">
+        <div class="feature-slider" id="heroSlider">
+          
+          <article class="feature" aria-labelledby="feat-title-1">
+            <a href="#"><div class="kicker tag-red">Exclusive: Analysis</div></a>
+            <a href="#"><img src="https://picsum.photos/1200/700?random=10" alt="Featured image 1" loading="lazy"></a>
+            <a href="#"><h1 id="feat-title-1">In-depth: How policy changes are reshaping the economy</h1></a>
+            <p class="muted">By Editorial Desk • 3h ago</p>
+            <p class="muted">A concise summary of the story to draw readers in — crisp, fact-first, and compelling. This featured piece includes analysis, expert comments and live updates.</p>
+          </article>
+
+          <article class="feature" aria-labelledby="feat-title-2">
+            <a href="#"><div class="kicker tag-red">Exclusive: Breaking</div></a>
+            <a href="#"><img src="https://picsum.photos/1200/700?random=15" alt="Featured image 2" loading="lazy"></a>
+            <a href="#"><h1 id="feat-title-2">Global Tensions Rise Over Latest Trade Dispute</h1></a>
+            <p class="muted">By International Desk • 1h ago</p>
+            <p class="muted">World powers are scrambling to find a diplomatic resolution as tariffs escalate, threatening global supply chains.</p>
+          </article>
+
+          <article class="feature" aria-labelledby="feat-title-3">
+            <a href="#"><div class="kicker tag-red">Exclusive: Culture</div></a>
+            <a href="#"><img src="https://picsum.photos/1200/700?random=16" alt="Featured image 3" loading="lazy"></a>
+            <a href="#"><h1 id="feat-title-3">New Documentary Shines Light on Forgotten History</h1></a>
+            <p class="muted">By Arts & Culture • 5h ago</p>
+            <p class="muted">Filmmaker explores the hidden archives of the region, revealing untold stories of resilience and change.</p>
+          </article>
+
+        </div>
+      </div>
+      <aside class="side-cards">
+        <a href="#" class="card animate-on-scroll delay-100"><img src="https://picsum.photos/320/200?random=11" alt=""><div><h3>State government passes new bill</h3><div class="meta muted">1h ago • Politics</div></div></a>
+        <a href="#" class="card animate-on-scroll delay-200"><img src="https://picsum.photos/320/200?random=12" alt=""><div><h3>Climate summit: Key takeaways</h3><div class="meta muted">4h ago • World</div></div></a>
+        <a href="#" class="card animate-on-scroll delay-300"><img src="https://picsum.photos/320/200?random=13" alt=""><div><h3>Sports roundup: Local teams rise</h3><div class="meta muted">2h ago • Sports</div></div></a>
+      </aside>
+    </section>
+    
+    <section class="section">
+        <h2>🔴 LIVE Updates & Streaming</h2>
+        <div class="live-video-section">
+            <div class="live-player-wrap animate-on-scroll delay-100">
+                <iframe width="100%" height="450" src="https://www.youtube.com/embed/jfKfPfyBkHw?autoplay=1&mute=1&controls=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="border-radius: 14px 14px 0 0;"></iframe>
+            </div>
+            <div class="live-feed-list animate-on-scroll delay-200">
+                <a href="#" class="live-feed-item animate-on-scroll delay-200">
+                    <img src="https://picsum.photos/160/100?random=51" alt="">
+                    <div><div class="live-tag">LIVE</div><h4>Prime Minister's Address on Economy</h4><div class="muted">5 min ago</div></div>
+                </a>
+                <a href="#" class="live-feed-item animate-on-scroll delay-300">
+                    <img src="https://picsum.photos/160/100?random=52" alt="">
+                    <div><div class="live-tag">LIVE</div><h4>Weather Alert: Cyclone approaching coast</h4><div class="muted">15 min ago</div></div>
+                </a>
+                <a href="#" class="live-feed-item animate-on-scroll delay-400">
+                    <img src="https://picsum.photos/160/100?random=53" alt="">
+                    <div><h4>Recent Coverage: State Poll Results</h4><div class="muted">3h ago</div></div>
+                </a>
+                <a href="#" class="live-feed-item animate-on-scroll delay-500">
+                    <img src="https://picsum.photos/160/100?random=54" alt="">
+                    <div><h4>Global Market Open Discussion</h4><div class="muted">1h ago</div></div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+      <h2>Opinion & Editorials</h2>
+      <div class="grid-wrapper">
+        <div class="grid">
+          <a href="#" class="news-card animate-on-scroll" style="transition-delay: 0ms;">
+            <div class="thumb"><img src="https://picsum.photos/800/600?random=21" alt=""></div>
+            <h4>Markets open lower amid global pressure</h4>
+            <p class="muted">Stocks opened lower as investors reacted to overnight developments and weak data from major economies.</p>
+          </a>
+
+          <a href="#" class="news-card animate-on-scroll" style="transition-delay: 100ms;">
+            <div class="thumb"><img src="https://picsum.photos/800/600?random=22" alt=""></div>
+            <h4>Technology: New breakthrough in AI</h4>
+            <p class="muted">Startups and large firms race to adopt the latest AI models. Experts say impacts will be profound.</p>
+          </a>
+
+          <a href="#" class="news-card animate-on-scroll" style="transition-delay: 200ms;">
+            <div class="thumb"><img src="https://picsum.photos/800/600?random=23" alt=""></div>
+            <h4>Health: Vaccination drive expands to rural areas</h4>
+            <p class="muted">Authorities announce expanded outreach to reach remote populations with mobile clinics.</p>
+          </a>
+
+          <a href="#" class="news-card animate-on-scroll" style="transition-delay: 300ms;">
+            <div class="thumb"><img src="https://picsum.photos/800/600?random=24" alt=""></div>
+            <h4>Entertainment: Film festival winners announced</h4>
+            <p class="muted">A celebration of independent cinema concluded with surprise winners.</p>
+          </a>
+
+          <a href="#" class="news-card animate-on-scroll" style="transition-delay: 400ms;">
+            <div class="thumb"><img src="https://picsum.photos/800/600?random=25" alt=""></div>
+            <h4>Science: Ocean research reveals new species</h4>
+            <p class="muted">Explorers document several previously unknown organisms in deep-sea habitats.</p>
+          </a>
+
+          <a href="#" class="news-card animate-on-scroll" style="transition-delay: 500ms;">
+            <div class="thumb"><img src="https://picsum.photos/800/600?random=26" alt=""></div>
+            <h4>Opinion: Why local governance matters</h4>
+            <p class="muted">An editorial arguing for decentralised decision-making and community participation.</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Top Videos</h2>
+      <div class="videos">
+        <a href="#" class="vid animate-on-scroll" style="transition-delay: 0ms;" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ">
+          <img src="https://picsum.photos/600/400?random=31" alt="">
+          <div class="play" aria-hidden="true"></div>
+        </a>
+        <a href="#" class="vid animate-on-scroll" style="transition-delay: 100ms;" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ">
+          <img src="https://picsum.photos/600/400?random=32" alt="">
+          <div class="play" aria-hidden="true"></div>
+        </a>
+        <a href="#" class="vid animate-on-scroll" style="transition-delay: 200ms;" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ">
+          <img src="https://picsum.photos/600/400?random=33" alt="">
+          <div class="play" aria-hidden="true"></div>
+        </a>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer-grid">
+        <div>
+          <h3 class="animate-on-scroll">About Saurabh News</h3>
+          <p class="small muted animate-on-scroll delay-100">Saurabh News is a demo news site built to showcase a clean, modern UI/UX with slow-motion animations and responsive design.</p>
+          
+          <div class="social-links animate-on-scroll delay-200">
+            <a href="#" target="_blank" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+            <a href="#" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+            <a href="#" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" target="_blank" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+            <a href="#" target="_blank" aria-label="Telegram"><i class="fa-brands fa-telegram"></i></a>
+          </div>
+
+        </div>
+        <div>
+          <h3 class="animate-on-scroll delay-300">Sections</h3>
+          <p class="small animate-on-scroll delay-400"><a href="#">Top Stories</a> • <a href="#">India</a> • <a href="#">World</a> • <a href="#">Business</a> • <a href="#">Politics</a> • <a href="#">Opinion</a></p>
+        </div>
+        <div>
+          <h3 class="animate-on-scroll delay-500">Contact</h3>
+          <p class="small muted animate-on-scroll delay-600">press@saurabhnews.example • +91 98765 43210</p>
+        </div>
+      </div>
+    </footer>
+
+  </main>
+
+  <div id="videoModal" style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.8);z-index:3000;opacity:0;pointer-events:none;transition:opacity 240ms">
+    <div style="width:90%;max-width:900px;background:transparent;position:relative;padding:18px">
+      <iframe id="videoFrame" width="100%" height="520" src="" frameborder="0" allowfullscreen style="border-radius:10px"></iframe>
+      <button id="closeVideo" class="btn btn-login" style="position:absolute;right:6px;top:6px;">✕</button>
+    </div>
+  </div>
+  
+  <a href="https://wa.me/919876543210?text=Hello%20Saurabh%20News" target="_blank" class="whatsapp-btn" aria-label="Chat on WhatsApp Business">
+      <i class="fa-brands fa-whatsapp"></i>
+  </a>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // loader
+      const loaderWrap = document.getElementById('loader-wrap');
+      // Set opacity to 0 after 700ms and hide it
+      setTimeout(() => { loaderWrap.style.opacity = '0'; loaderWrap.style.visibility = 'hidden' }, 700);
+
+      // mobile menu
+      const hambBtn = document.getElementById('hambBtn');
+      const mobileMenu = document.getElementById('mobileMenu');
+      const closeMobile = document.getElementById('closeMobile');
+      
+      // FIX: Ensure mobile menu toggle works reliably
+      hambBtn.addEventListener('click', (e) => { 
+        e.preventDefault(); 
+        mobileMenu.classList.add('open'); 
+        mobileMenu.setAttribute('aria-hidden', 'false');
+        // Optional: Lock body scrolling when menu is open
+        document.body.style.overflow = 'hidden'; 
+      });
+      
+      closeMobile.addEventListener('click', (e) => { 
+        e.preventDefault(); 
+        mobileMenu.classList.remove('open'); 
+        mobileMenu.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = ''; // Unlock body scrolling
+      });
+
+      // mega menu for touch devices: open on tap
+      const mega = document.querySelector('.mega');
+      if (mega) {
+        mega.addEventListener('click', (e) => {
+          const panel = mega.querySelector('.mega-panel');
+          // Only toggle on tap/click if it's a touch device or small screen
+          if (window.innerWidth <= 820 || !window.matchMedia('(hover: hover)').matches) {
+             e.preventDefault(); // Prevent navigating away on touch/mobile
+             panel.classList.toggle('show');
+          }
+        })
+      }
+
+      // video modal (made clickable)
+      const vids = document.querySelectorAll('.vid');
+      const modal = document.getElementById('videoModal');
+      const frame = document.getElementById('videoFrame');
+      const closeVideo = document.getElementById('closeVideo');
+      vids.forEach(v => { v.addEventListener('click', (e) => { e.preventDefault(); const url = v.getAttribute('data-video'); frame.src = url + '?autoplay=1&rel=0'; modal.style.opacity = '1'; modal.style.pointerEvents = 'auto' }) });
+      closeVideo.addEventListener('click', () => { frame.src = ''; modal.style.opacity = '0'; modal.style.pointerEvents = 'none' });
+      modal.addEventListener('click', (e) => { if (e.target === modal) { frame.src = ''; modal.style.opacity = '0'; modal.style.pointerEvents = 'none' } })
+
+      // pause marquee on hover
+      const marquee = document.querySelector('.inner');
+      marquee.addEventListener('mouseenter', () => { marquee.style.animationPlayState = 'paused' });
+      marquee.addEventListener('mouseleave', () => { marquee.style.animationPlayState = 'running' });
+      
+      // *** Auto-Sliding Hero Carousel ***
+      const slider = document.getElementById('heroSlider');
+      let currentSlide = 0;
+      const totalSlides = 3; 
+
+      function nextSlide() {
+          currentSlide = (currentSlide + 1) % totalSlides;
+          const offset = -currentSlide * (100 / totalSlides);
+          slider.style.transform = `translateX(${offset}%)`;
+      }
+      // Start sliding every 5 seconds
+      setInterval(nextSlide, 5000); 
+
+      // *** Intersection Observer for Animation Loop FIX (Re-Triggers on every scroll) ***
+      const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+              const target = entry.target;
+              if (entry.isIntersecting) {
+                  // Element is entering the viewport -> Animate it (Slow-motion)
+                  target.classList.add('animated');
+              } else {
+                  // Element is leaving the viewport -> Remove animated class to re-trigger on next scroll
+                  target.classList.remove('animated');
+              }
+          });
+      }, { 
+          // Threshold set low to animate as soon as it appears
+          threshold: 0.05, 
+          // Default root margin ensures animation resets when out of bounds.
+          rootMargin: "0px 0px 0px 0px" 
+      });
+
+      // Apply observer to all animatable elements
+      document.querySelectorAll('.animate-on-scroll').forEach((el) => {
+          // Exclude the hero wrapper from the automatic scroll animation if it contains the auto slider
+          if (!el.classList.contains('feature-wrapper')) {
+             observer.observe(el);
+          }
+      });
+      
+      // For elements visible on load (like the hero section/slider wrapper) we trigger the animation immediately
+      document.querySelectorAll('.feature-wrapper.animate-on-scroll, .live-player-wrap.animate-on-scroll, .live-feed-list.animate-on-scroll').forEach(el => {
+          if (el.classList.contains('animate-on-scroll')) {
+              el.classList.add('animated');
+          }
+      });
+    });
+  </script>
+</body>
+</html>
